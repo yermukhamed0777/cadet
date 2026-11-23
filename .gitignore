@@ -1,0 +1,5 @@
+node_modules
+dist
+dist-hash
+.env
+.env.local
