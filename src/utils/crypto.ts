@@ -22,9 +22,9 @@ async function pbkdf2(password: string, salt: Uint8Array): Promise<string> {
   return toHex(bits);
 }
 
-/** Пароль никогда не хранится в открытом виде: PBKDF2-SHA256 + случайная соль. */
+/** Passwords are never stored in plain text: PBKDF2-SHA256 with a random salt. */
 export async function hashPassword(password: string) {
-  if (!crypto?.subtle) throw new Error('Безопасное хранение недоступно: откройте приложение по HTTPS или localhost.');
+  if (!crypto?.subtle) throw new Error('Secure storage is unavailable: open the app over HTTPS or localhost.');
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
   return { salt: toHex(salt), hash: await pbkdf2(password, salt) };

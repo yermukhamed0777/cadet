@@ -3,7 +3,7 @@ import type { NewsItem } from '../types';
 import { api } from './apiClient';
 import { isDemoMode } from './config';
 
-/** Новости: в demo — проверенные публикации из data/news.ts; в production — GET /news (CMS). */
+/** Updates: in demo, verified items from data/news.ts; in production, GET /news (CMS). */
 export const newsService = {
   async list(): Promise<NewsItem[]> {
     const items = isDemoMode() ? news : await api<NewsItem[]>('/news');

@@ -1,82 +1,116 @@
 import type { DocumentCategory, DocumentItem } from '../types';
-import { SRC } from './sources';
+import { SRC, URLS } from './sources';
 
 export const documentCategories: { id: DocumentCategory; title: string }[] = [
-  { id: 'main', title: 'Основные документы' },
-  { id: 'education', title: 'Документы об образовании' },
-  { id: 'family', title: 'Документы семьи' },
-  { id: 'references', title: 'Характеристики' },
-  { id: 'medical', title: 'Медицинские документы' },
-  { id: 'photos', title: 'Фотографии' },
-  { id: 'special', title: 'Специальные документы' },
+  { id: 'main', title: 'Application' },
+  { id: 'education', title: 'Academic records' },
+  { id: 'family', title: 'Family & dependents' },
+  { id: 'references', title: 'Recommendations' },
+  { id: 'medical', title: 'Medical (DoDMERB)' },
+  { id: 'photos', title: 'Photos' },
+  { id: 'special', title: 'Nomination & other' },
 ];
 
-export const NEEDS_REVIEW_TEXT = 'Требует уточнения по актуальным требованиям приёмной комиссии';
+export const NEEDS_REVIEW_TEXT = 'Check the current requirements with the admissions office';
 
 const review = SRC.none(NEEDS_REVIEW_TEXT);
 
 /**
- * Чеклист документов. Официальный актуальный перечень документов не найден,
- * поэтому количество копий и нотариальное заверение не указываются (null).
- * Позиции без официального подтверждения помечены needs_review.
+ * Application checklist. An item is only marked verified when an official
+ * academy page names it; copies and notarization stay null when unconfirmed.
  */
 export const documents: DocumentItem[] = [
   {
-    id: 'doc-id',
+    id: 'doc-portal',
     category: 'main',
-    title: 'Удостоверение личности',
-    description: 'Копия удостоверения входит в архивный список ВВК 2025.',
+    title: 'Application submitted through the academy portal',
+    description: 'Each academy publishes its own application portal; USMA, USNA, USAFA, USCGA and USMMA all accept online applications.',
     copies: null,
     notarized: null,
-    ...SRC.userArchive2025('Количество копий и заверение — требует уточнения'),
+    ...SRC.westpoint('Portal list is on each academy’s admissions site'),
   },
   {
-    id: 'doc-qyzmet',
+    id: 'doc-usma-checklist',
     category: 'main',
-    title: 'Заявка в системе Qyzmet-Police.kz',
-    description: 'В 2026 году документы кандидатов подавались через систему Qyzmet-Police.kz.',
+    title: 'USMA Candidate Checklist',
+    description: 'West Point publishes a candidate checklist with a January 31 deadline in the senior year.',
     copies: null,
     notarized: null,
-    ...SRC.mvd2026Digital(),
+    ...SRC.westpoint(),
+    sourceUrl: URLS.westpointSteps,
   },
   {
-    id: 'doc-ent',
-    category: 'education',
-    title: 'Результаты ЕНТ',
-    description:
-      'По данным Алматинской академии: не менее 50 баллов, при этом не менее 3 баллов по грамотности чтения и математической грамотности и не менее 5 — по остальным предметам.',
+    id: 'doc-usafa-pcq',
+    category: 'main',
+    title: 'USAFA Pre-Candidate Questionnaire',
+    description: 'The first step published by the Air Force Academy is the Pre-Candidate Questionnaire.',
     copies: null,
     notarized: null,
-    ...SRC.almatyApplicants(),
+    ...SRC.colorado(),
   },
   {
-    id: 'doc-school',
+    id: 'doc-transcript',
     category: 'education',
-    title: 'Документ об образовании',
+    title: 'Official high school transcript',
     description: NEEDS_REVIEW_TEXT,
     copies: null,
     notarized: null,
     ...review,
   },
-  { id: 'doc-family', category: 'family', title: 'Документы семьи', description: NEEDS_REVIEW_TEXT, copies: null, notarized: null, ...review },
-  { id: 'doc-refs', category: 'references', title: 'Характеристики', description: NEEDS_REVIEW_TEXT, copies: null, notarized: null, ...review },
   {
-    id: 'doc-medical',
-    category: 'medical',
-    title: 'Медицинские документы для ВВК',
-    description: 'См. отдельный чеклист ВВК (архивная версия 2025).',
+    id: 'doc-tests',
+    category: 'education',
+    title: 'SAT, ACT or CLT scores',
+    description: 'USNA lists SAT and ACT results and, from the 2027 academic year, the Classic Learning Test.',
     copies: null,
     notarized: null,
-    ...SRC.userArchive2025(),
+    ...SRC.annapolis('Applies to the Class of 2031 cycle'),
+    sourceUrl: URLS.annapolisHome,
+  },
+  {
+    id: 'doc-dependents',
+    category: 'family',
+    title: 'Dependent-status information',
+    description: 'The academies require unmarried candidates without dependents; check which form documents this.',
+    copies: null,
+    notarized: null,
+    ...review,
+  },
+  {
+    id: 'doc-recommendations',
+    category: 'references',
+    title: 'Recommendations / evaluations',
+    description: NEEDS_REVIEW_TEXT,
+    copies: null,
+    notarized: null,
+    ...review,
+  },
+  {
+    id: 'doc-dodmerb',
+    category: 'medical',
+    title: 'DoDMERB medical examination paperwork',
+    description: 'DoDMERB determines medical qualification for the academies; the process is run through DMACS and DODMETS.',
+    copies: null,
+    notarized: null,
+    ...SRC.dodmerb(),
   },
   {
     id: 'doc-photo',
     category: 'photos',
-    title: 'Фотографии',
-    description: 'Фото упоминается в архивном списке ВВК 2025. Формат и количество — требует уточнения.',
+    title: 'Photos',
+    description: NEEDS_REVIEW_TEXT,
     copies: null,
     notarized: null,
-    ...SRC.userArchive2025(),
+    ...review,
   },
-  { id: 'doc-special', category: 'special', title: 'Специальные документы', description: NEEDS_REVIEW_TEXT, copies: null, notarized: null, ...review },
+  {
+    id: 'doc-nomination',
+    category: 'special',
+    title: 'Nomination packet',
+    description: 'Required at USMA, USNA, USAFA and USMMA; USCGA does not require a congressional nomination.',
+    copies: null,
+    notarized: null,
+    ...SRC.westpoint(),
+    sourceUrl: URLS.westpointNominations,
+  },
 ];

@@ -10,12 +10,12 @@ export function ProfileEditPage() {
   const toast = useToast();
   return (
     <>
-      <PageHeader title="Редактировать профиль" back="/profile" />
+      <PageHeader title="Edit profile" back="/profile" />
       <ProfileForm
         initial={state.profile}
-        submitLabel="Сохранить"
+        submitLabel="Save"
         onSaved={() => {
-          toast('Профиль обновлён');
+          toast('Profile updated');
           navigate('/profile');
         }}
       />

@@ -8,7 +8,7 @@ export function NotificationBell({ tone = 'dark' }: { tone?: 'dark' | 'light' })
     <Link
       to="/notifications"
       className={`relative grid h-11 w-11 shrink-0 place-items-center rounded-full ${tone === 'dark' ? 'text-white hover:bg-white/10' : 'text-navy hover:bg-navy/5'}`}
-      aria-label={unread ? `Уведомления: ${unread} непрочитанных` : 'Уведомления'}
+      aria-label={unread ? `Notifications: ${unread} unread` : 'Notifications'}
     >
       <Bell className="h-[22px] w-[22px]" />
       {unread > 0 && (

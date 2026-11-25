@@ -1,28 +1,28 @@
-// ─── Верификация данных ─────────────────────────────────────────────
-// verified     — подтверждено официальным источником
-// archive      — архивная информация (прошлый год), не выдаётся за актуальную
-// needs_review — не удалось подтвердить, требует уточнения
+// ─── Data verification ───────────────────────────────────────────────
+// verified     — confirmed by an official source
+// archive      — information from a previous cycle, never presented as current
+// needs_review — could not be confirmed; requires manual verification
 export type VerificationStatus = 'verified' | 'archive' | 'needs_review';
 
 export interface SourceRef {
-  /** Название источника, например «Официальный сайт Алматинской академии МВД РК» */
+  /** Source name, e.g. "U.S. Military Academy — Admissions" */
   source: string;
   sourceUrl: string;
-  /** Дата проверки, ISO (YYYY-MM-DD) */
+  /** Date of last manual check, ISO (YYYY-MM-DD) */
   checkedAt: string;
-  /** Год, к которому относится информация; null — год в источнике не указан */
+  /** Cycle the information applies to; null — no year stated in the source */
   applicableYear: number | null;
   status: VerificationStatus;
-  /** Пояснение: расхождения, ограничения проверки */
+  /** Discrepancies and verification limits */
   note?: string;
 }
 
-/** Значение-факт с источником. value = null → «Нет подтверждённых данных» */
+/** A fact with a source. value = null renders as "No confirmed data". */
 export interface Fact<T = string> extends SourceRef {
   value: T | null;
 }
 
-export type AcademyId = 'almaty' | 'karaganda' | 'kostanay' | 'aktobe';
+export type AcademyId = 'westpoint' | 'annapolis' | 'coloradosprings' | 'newlondon' | 'kingspoint';
 
 export interface Contact {
   label: string;
@@ -55,7 +55,7 @@ export interface Specialty extends SourceRef {
   id: string;
   academyId: AcademyId;
   title: string;
-  /** Код программы; null — код в источнике не указан */
+  /** Program code; null — no code given in the source */
   code: string | null;
   level: string;
   duration: string | null;
@@ -63,7 +63,7 @@ export interface Specialty extends SourceRef {
   summary: string | null;
   studyAreas: string[];
   careers: string[];
-  /** Расхождения названий между источниками */
+  /** Name differences between sources */
   discrepancy?: string;
 }
 
@@ -103,12 +103,14 @@ export interface FitnessExercise {
   id: string;
   gender: Gender;
   title: string;
-  unit: 'sec' | 'min_sec' | 'reps';
-  /** true — меньше = лучше (бег) */
+  unit: 'sec' | 'min_sec' | 'reps' | 'ft';
+  /** true — lower is better (runs) */
   lowerIsBetter: boolean;
   excellent: number;
   good: number;
   satisfactory: number;
+  /** Official source publishes one reference value, not tier cutoffs */
+  referenceOnly?: boolean;
 }
 
 export interface FitnessNormSet extends SourceRef {
@@ -149,7 +151,7 @@ export interface VvkLocation extends SourceRef {
   phone: string | null;
 }
 
-// ─── Пользователь ──────────────────────────────────────────────────
+// ─── User ────────────────────────────────────────────────────────────
 export type AuthProvider = 'demo' | 'google' | 'backend';
 
 export interface User {
@@ -233,7 +235,7 @@ export interface PathStage {
   title: string;
   description: string;
   done: boolean;
-  /** Прогресс внутри этапа (для чеклистов), 0..1 */
+  /** Progress within the stage (for checklists), 0..1 */
   partial?: number;
   partialLabel?: string;
   link: string;

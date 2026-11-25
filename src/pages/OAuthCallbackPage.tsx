@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import { useAuth } from '../hooks/useAuth';
 import { ErrorState, LoadingState } from '../components/ui';
 
-/** Возврат с backend после Google OAuth: /auth/callback?token=... */
+/** Return from the backend after Google OAuth: /auth/callback?token=... */
 export function OAuthCallbackPage() {
   const [params] = useSearchParams();
   const { setSession } = useAuth();
@@ -15,7 +15,7 @@ export function OAuthCallbackPage() {
     const token = params.get('token');
     const err = params.get('error');
     if (err || !token) {
-      setError(err ? `Google: ${err}` : 'Не получен токен авторизации.');
+      setError(err ? `Google: ${err}` : 'No authorization token received.');
       return;
     }
     authService
@@ -32,9 +32,9 @@ export function OAuthCallbackPage() {
       <div className="mx-auto max-w-md p-6">
         <ErrorState text={error} />
         <Link to="/login" className="mt-4 block text-center font-semibold text-navy">
-          Вернуться ко входу
+          Back to sign in
         </Link>
       </div>
     );
-  return <LoadingState text="Завершаем вход через Google…" />;
+  return <LoadingState text="Completing Google sign-in…" />;
 }

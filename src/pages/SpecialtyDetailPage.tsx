@@ -28,13 +28,13 @@ export function SpecialtyDetailPage() {
   const isSelected = state.selectedSpecialty === s.id;
 
   const later = () => {
-    toast('Вы сможете выбрать специальность позже', 'info');
+    toast('You can select a program later', 'info');
     navigate(state.selectedAcademy ? '/home' : `/academies/${academy.id}/specialties`);
   };
 
   return (
     <>
-      <PageHeader title="Специальность" subtitle={academy.shortTitle} back={`/academies/${academy.id}/specialties`} />
+      <PageHeader title="Program" subtitle={academy.shortTitle} back={`/academies/${academy.id}/specialties`} />
 
       <div className="mb-4">
         {s.code && <span className="mb-2 inline-block rounded-md bg-navy px-2 py-0.5 font-mono text-[12px] font-semibold tracking-wide text-gold">{s.code}</span>}
@@ -48,14 +48,14 @@ export function SpecialtyDetailPage() {
         <div className="mb-4 flex gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-[13.5px] leading-snug text-amber-900">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <p>
-            <b>Расхождение в источниках.</b> {s.discrepancy}
+            <b>Sources disagree.</b> {s.discrepancy}
           </p>
         </div>
       )}
 
       <Card>
-        <Block title="О программе">{s.summary ?? <NoData text="Описание в проверенных источниках не найдено" />}</Block>
-        <Block title="Что изучается">
+        <Block title="About the program">{s.summary ?? <NoData text="No description found in verified sources" />}</Block>
+        <Block title="What you study">
           {s.studyAreas.length ? (
             <ul className="list-disc space-y-0.5 pl-5">
               {s.studyAreas.map((x) => (
@@ -66,10 +66,10 @@ export function SpecialtyDetailPage() {
             <NoData />
           )}
         </Block>
-        <Block title="Уровень образования">{s.level}</Block>
-        <Block title="Продолжительность">{s.duration ?? <NoData />}</Block>
-        <Block title="Квалификация">{s.qualification ?? <NoData />}</Block>
-        <Block title="Возможные направления работы">
+        <Block title="Degree level">{s.level}</Block>
+        <Block title="Duration">{s.duration ?? <NoData />}</Block>
+        <Block title="Qualification">{s.qualification ?? <NoData />}</Block>
+        <Block title="Career paths">
           {s.careers.length ? (
             <ul className="list-disc space-y-0.5 pl-5">
               {s.careers.map((x) => (
@@ -80,12 +80,12 @@ export function SpecialtyDetailPage() {
             <NoData />
           )}
         </Block>
-        <Block title="Требования">
+        <Block title="Eligibility & steps">
           <Link to="/requirements" className="inline-flex min-h-[36px] items-center gap-1 font-semibold text-navy">
-            ВВК, документы, физическая подготовка <ChevronRight className="h-4 w-4" aria-hidden />
+            Medical exam, documents, fitness test <ChevronRight className="h-4 w-4" aria-hidden />
           </Link>
         </Block>
-        <Block title="Год применимости">{s.applicableYear ?? <NoData text="Год в источнике не указан" />}</Block>
+        <Block title="Applicable year">{s.applicableYear ?? <NoData text="No year listed in the source" />}</Block>
       </Card>
 
       <div className="mt-4">
@@ -95,22 +95,22 @@ export function SpecialtyDetailPage() {
       <div className="mt-5 flex flex-col gap-2">
         {isSelected ? (
           <p className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-gold/15 font-semibold text-navy">
-            <CheckCircle2 className="h-5 w-5 text-gold-dark" aria-hidden /> Эта специальность выбрана
+            <CheckCircle2 className="h-5 w-5 text-gold-dark" aria-hidden /> This program is selected
           </p>
         ) : (
           <Button variant="gold" full onClick={() => setConfirm(true)}>
-            Выбрать эту специальность
+            Select this program
           </Button>
         )}
         <Button variant="secondary" full onClick={later}>
-          {isSelected ? 'На главную' : 'Выбрать позже'}
+          {isSelected ? 'Go home' : 'Choose later'}
         </Button>
       </div>
 
       <Modal
         open={confirm}
         onClose={() => setConfirm(false)}
-        title="Подтвердите выбор"
+        title="Confirm selection"
         footer={
           <>
             <Button
@@ -119,26 +119,26 @@ export function SpecialtyDetailPage() {
               onClick={() => {
                 selectSpecialty(s.id);
                 setConfirm(false);
-                toast('Специальность сохранена в профиле');
+                toast('Program saved to your profile');
                 navigate('/home');
               }}
             >
-              Подтвердить
+              Confirm
             </Button>
             <Button variant="secondary" full onClick={() => setConfirm(false)}>
-              Отмена
+              Cancel
             </Button>
           </>
         }
       >
-        <p className="text-sm text-muted">Вы хотите выбрать:</p>
+        <p className="text-sm text-muted">You are selecting:</p>
         <p className="mt-0.5 font-semibold">{s.title}</p>
-        <p className="mt-3 text-sm text-muted">Академия:</p>
+        <p className="mt-3 text-sm text-muted">Academy:</p>
         <p className="mt-0.5 font-semibold">{academy.title}</p>
         {state.selectedAcademy && state.selectedAcademy !== academy.id && (
-          <p className="mt-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">Выбранная академия изменится на эту.</p>
+          <p className="mt-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">Your selected academy will change to this one.</p>
         )}
-        <p className="mt-3 text-[13px] text-muted">Изменить выбор можно в любой момент в профиле.</p>
+        <p className="mt-3 text-[13px] text-muted">You can change your selection at any time in your profile.</p>
       </Modal>
     </>
   );

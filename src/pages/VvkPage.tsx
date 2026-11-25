@@ -14,25 +14,24 @@ export function VvkPage() {
 
   return (
     <>
-      <PageHeader title="ВВК" subtitle="Военно-врачебная комиссия" back />
+      <PageHeader title="Medical exam" subtitle="DoDMERB medical screening" back />
 
       <Card className="mb-3">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-semibold text-ink">Подготовка к ВВК</h2>
+          <h2 className="font-semibold text-ink">Medical exam preparation</h2>
           <span className="text-sm font-semibold text-navy tabular-nums">
-            {done} / {total} выполнено
+            {done} / {total} complete
           </span>
         </div>
         <div className="mt-2">
-          <ProgressBar value={total ? done / total : 0} label="Прогресс ВВК" size="lg" />
+          <ProgressBar value={total ? done / total : 0} label="Medical exam progress" size="lg" />
         </div>
       </Card>
 
       <div className="mb-3 flex gap-2 rounded-xl border border-slate-200 bg-slate-100 p-3 text-[13px] leading-snug text-slate-800">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
         <p>
-          <b>{VVK_VERSION_TITLE}.</b> Актуальный официальный список на 2026 год не найден — это не требования 2026 года. Не является медицинской рекомендацией.
-          {state.profile?.gender === 'male' && ' Пункты только для кандидатов женского пола скрыты.'}
+          <b>{VVK_VERSION_TITLE}.</b> This is a preparation checklist, not an official requirements list or medical advice. Confirm the current steps with your academy.
         </p>
       </div>
 
@@ -52,7 +51,7 @@ export function VvkPage() {
                     type="button"
                     role="checkbox"
                     aria-checked={checked}
-                    aria-label={`Отметить: ${item.title}`}
+                    aria-label={`Mark: ${item.title}`}
                     onClick={() => toggleVvk(item.id)}
                     className="grid h-11 w-11 place-items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
                   >
@@ -80,7 +79,7 @@ export function VvkPage() {
       </ul>
 
       <Link to="/vvk/map" className="mt-4 flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-line bg-white font-semibold text-navy">
-        <MapPinned className="h-5 w-5 text-gold-dark" aria-hidden /> ВВК на карте
+        <MapPinned className="h-5 w-5 text-gold-dark" aria-hidden /> Medical exam map
       </Link>
     </>
   );

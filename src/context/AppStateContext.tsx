@@ -72,7 +72,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       })
       .catch((e: Error) => {
         if (cancelled) return;
-        setError(e.message || 'Не удалось загрузить данные');
+        setError(e.message || 'Failed to load data');
         setStatus('error');
       });
     return () => {
@@ -80,18 +80,18 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     };
   }, [userId, nonce]);
 
-  // Сохранение при каждом изменении состояния (после загрузки)
+  // Save on every state change (after loading)
   useEffect(() => {
     if (!userId || loadedFor.current !== userId || status !== 'ready') return;
     profileService
       .save(userId, state)
       .then(() => setSaveError(null))
-      .catch((e: Error) => setSaveError(e.message || 'Не удалось сохранить изменения'));
+      .catch((e: Error) => setSaveError(e.message || 'Failed to save changes'));
   }, [state, userId, status]);
 
   const update = useCallback((fn: (s: UserState) => UserState) => setState((s) => fn(s)), []);
 
-  // Пока данные текущего пользователя не загружены — всегда 'loading' (защита от гонки при старте)
+  // Until the current user's data is loaded, always report 'loading' (startup race guard)
   const effectiveStatus: Status = userId && loadedUser !== userId && status !== 'error' ? 'loading' : status;
 
   const value = useMemo<AppStateValue>(

@@ -12,21 +12,21 @@ export function MyPathPage() {
 
   return (
     <>
-      <PageHeader title="Мой путь" subtitle="От регистрации до зачисления" />
+      <PageHeader title="My Path" subtitle="From sign-up to appointment" />
       <Card className="mb-5">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Готовность</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Your readiness</p>
             <p className="font-display text-4xl font-semibold text-navy tabular-nums">{percent}%</p>
           </div>
           <p className="text-sm text-muted tabular-nums">
-            {done} из {total} этапов
+            {done} of {total} steps
           </p>
         </div>
         <div className="mt-2">
-          <ProgressBar value={percent / 100} label="Готовность" size="lg" />
+          <ProgressBar value={percent / 100} label="Readiness" size="lg" />
         </div>
-        <p className="mt-2 text-[12.5px] text-muted">Процент = выполненные этапы ÷ все этапы. Этапы отмечаются по вашим действиям в приложении.</p>
+        <p className="mt-2 text-[12.5px] text-muted">Percentage = completed steps ÷ all steps. Steps are marked automatically as you use the app.</p>
       </Card>
 
       <ol className="relative">
@@ -48,7 +48,7 @@ export function MyPathPage() {
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-semibold leading-snug text-ink">{s.title}</h3>
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${s.done ? 'bg-emerald-50 text-emerald-800' : 'bg-page text-muted'}`}>
-                    {s.done ? 'Выполнено' : 'Не выполнено'}
+                    {s.done ? 'Complete' : 'Not complete'}
                   </span>
                 </div>
                 <p className="mt-1 text-[13.5px] leading-snug text-muted">{s.description}</p>
@@ -70,10 +70,10 @@ export function MyPathPage() {
                         checked={manualOn}
                         onChange={(e) => {
                           setManualStage(s.manual!, e.target.checked);
-                          toast(e.target.checked ? 'Этап отмечен' : 'Отметка снята', 'info');
+                          toast(e.target.checked ? 'Step checked' : 'Check removed', 'info');
                         }}
                       />
-                      {s.id === 'vvk' ? 'ВВК пройдена' : 'Этап пройден'}
+                      {s.id === 'vvk' ? 'Medical exam passed' : 'Step complete'}
                     </label>
                   )}
                 </div>

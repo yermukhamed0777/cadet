@@ -1,52 +1,55 @@
 import type { ChecklistItem, VvkLocation } from '../types';
 import { SRC } from './sources';
 
-const A = (note?: string) =>
-  SRC.userArchive2025(note ?? 'Архивная информация — 2025. Актуальный список 2026 официально не найден.');
+const D = (note?: string) =>
+  SRC.dodmerb(note ?? 'Official DoDMERB page; confirm current procedures with your commissioning program');
+
+export const VVK_VERSION_TITLE = 'Medical screening — DoDMERB process';
 
 /**
- * ВВК — версия 2025 / архивная информация.
- * Актуальный официальный список на 2026 год не найден. Это не медицинская рекомендация.
+ * Medical qualification checklist. This is an administrative tracker, not
+ * medical advice and not a prediction of qualification.
  */
-export const VVK_VERSION_TITLE = 'ВВК — версия 2025 / архивная информация';
-
 export const vvkChecklist: ChecklistItem[] = [
-  { id: 'vvk-063', title: 'Прививочная карта (форма 063)', description: 'Карта профилактических прививок.', ...A() },
-  { id: 'vvk-amb', title: 'Амбулаторная карта', description: 'Медицинская карта из поликлиники по месту прикрепления.', ...A() },
-  { id: 'vvk-027', title: 'Форма 027', description: 'Выписка из медицинской карты.', ...A() },
-  { id: 'vvk-disp', title: 'Справки из соответствующих диспансеров', description: 'Перечень диспансеров уточняйте в приёмной комиссии.', ...A() },
   {
-    id: 'vvk-terms',
-    title: 'Анализы и обследования в установленные сроки',
-    description: 'Сроки действия результатов уточняйте на момент подачи.',
-    details: 'Сроки годности анализов в архивном списке не указаны — требует уточнения по актуальным требованиям.',
-    ...A(),
+    id: 'med-dodmerb',
+    title: 'Complete the DoDMERB examination',
+    description: 'DoDMERB determines medical qualification for the five service academies, ROTC and USUHS.',
+    ...D(),
   },
-  { id: 'vvk-blood', title: 'Общий анализ крови', description: 'Результат анализа.', ...A() },
-  { id: 'vvk-rw', title: 'Реакция Вассермана', description: 'Результат анализа.', ...A() },
-  { id: 'vvk-urine', title: 'Анализ мочи', description: 'Результат анализа.', ...A() },
-  { id: 'vvk-smear', title: 'Мазок', description: 'Для кандидатов женского пола.', appliesTo: 'female', ...A() },
-  { id: 'vvk-ecg', title: 'ЭКГ с описанием', description: 'Электрокардиограмма с заключением.', ...A() },
-  { id: 'vvk-drugs', title: 'Тест на наркотические/психотропные вещества', description: 'Результат теста.', ...A() },
-  { id: 'vvk-hiv', title: 'ВИЧ', description: 'Результат анализа.', ...A() },
-  { id: 'vvk-hep', title: 'Маркеры гепатитов B/C', description: 'Результат анализа.', ...A() },
-  { id: 'vvk-xray', title: 'Рентген / флюорография', description: 'Снимок с заключением.', ...A() },
-  { id: 'vvk-echo', title: 'УЗИ сердца', description: 'Заключение УЗИ.', ...A() },
-  { id: 'vvk-gyn', title: 'Справка гинеколога', description: 'Для кандидатов женского пола.', appliesTo: 'female', ...A() },
-  { id: 'vvk-id', title: 'Копия удостоверения личности', description: 'Взять с собой на ВВК.', ...A() },
-  { id: 'vvk-photo', title: 'Фото', description: 'Формат и количество — требует уточнения.', ...A() },
-  { id: 'vvk-pen', title: 'Синяя ручка', description: 'Для заполнения документов.', ...A() },
-  { id: 'vvk-mask', title: 'Медицинская маска', description: 'При необходимости.', ...A() },
+  {
+    id: 'med-dmacs',
+    title: 'Use the DMACS 2.0 / DODMETS process',
+    description: 'The official page names DMACS 2.0 and DODMETS as part of the examination process.',
+    ...D(),
+  },
+  {
+    id: 'med-status',
+    title: 'Check your qualification status',
+    description: 'Review the result in the official system, not in a third-party tracker.',
+    ...D('The tracker only records your own progress'),
+  },
+  {
+    id: 'med-waiver',
+    title: 'Waiver request, if applicable',
+    description: 'Waiver authority rests with the commissioning program, not with DoDMERB.',
+    ...D(),
+  },
+  {
+    id: 'med-deadline',
+    title: 'Confirm the deadline with your academy',
+    description: 'Deadlines vary by school and cycle; no universal date is published here.',
+    ...SRC.none('Check the admissions office for the current cycle'),
+  },
 ];
 
 /**
- * Пункты прохождения ВВК. Показываем только подтверждённые адреса.
- * Официально подтверждённых адресов пока нет — список пуст намеренно.
- * Добавляйте записи только с источником (status: 'verified').
+ * Exam locations. No verified street addresses are published in the checked
+ * sources, so the list stays empty rather than showing invented locations.
  */
 export const vvkLocations: VvkLocation[] = [];
 
 export const vvk2026Note = {
-  text: 'В 2026 году кандидаты подавали документы через систему Qyzmet-Police.kz; там же отражались результаты военно-врачебной комиссии.',
-  ...SRC.mvd2026Digital(),
+  text: 'DoDMERB determines medical qualification for the service academies. This screen tracks your preparation only — it is not a medical assessment or an official result.',
+  ...D(),
 };

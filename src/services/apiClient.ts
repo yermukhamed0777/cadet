@@ -11,9 +11,9 @@ export const setApiToken = (t: string | null) => {
   authToken = t;
 };
 
-/** Тонкая обёртка над fetch для production backend */
+/** Thin fetch wrapper for the production backend */
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
-  if (!config.apiUrl) throw new ApiError(0, 'Backend не настроен (VITE_API_URL).');
+  if (!config.apiUrl) throw new ApiError(0, 'Backend is not configured (VITE_API_URL).');
   const res = await fetch(`${config.apiUrl}${path}`, {
     ...init,
     credentials: 'include',
@@ -24,7 +24,7 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
     },
   });
   if (!res.ok) {
-    let msg = `Ошибка сервера (${res.status})`;
+    let msg = `Server error (${res.status})`;
     try {
       const body = await res.json();
       if (body?.message) msg = body.message;

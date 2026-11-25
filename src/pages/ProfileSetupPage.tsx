@@ -24,12 +24,12 @@ export function ProfileForm({
   const set = (k: keyof Profile) => (e: React.ChangeEvent<HTMLInputElement>) => setP({ ...p, [k]: e.target.value });
 
   const errors = {
-    lastName: validateName(p.lastName, 'Фамилия'),
-    firstName: validateName(p.firstName, 'Имя'),
-    middleName: validateName(p.middleName, 'Отчество', false),
+    lastName: validateName(p.lastName, 'Last name'),
+    firstName: validateName(p.firstName, 'First name'),
+    middleName: validateName(p.middleName, 'Middle name', false),
     birthDate: validateBirthDate(p.birthDate),
-    city: p.city.trim().length < 2 ? 'Укажите город' : null,
-    gender: p.gender ? null : 'Выберите пол',
+    city: p.city.trim().length < 2 ? 'Enter a city' : null,
+    gender: p.gender ? null : 'Select a gender',
   };
   const e = touched ? errors : ({} as Partial<typeof errors>);
 
@@ -45,19 +45,19 @@ export function ProfileForm({
 
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-      <Field id="lastName" label="Фамилия" autoComplete="family-name" value={p.lastName} onChange={set('lastName')} error={e.lastName} />
-      <Field id="firstName" label="Имя" autoComplete="given-name" value={p.firstName} onChange={set('firstName')} error={e.firstName} />
-      <Field id="middleName" label="Отчество (при наличии)" autoComplete="additional-name" value={p.middleName} onChange={set('middleName')} error={e.middleName} />
-      <Field id="birthDate" label="Дата рождения" type="date" max={today} value={p.birthDate} onChange={set('birthDate')} error={e.birthDate} />
-      <Field id="city" label="Город" autoComplete="address-level2" value={p.city} onChange={set('city')} error={e.city} />
+      <Field id="lastName" label="Last name" autoComplete="family-name" value={p.lastName} onChange={set('lastName')} error={e.lastName} />
+      <Field id="firstName" label="First name" autoComplete="given-name" value={p.firstName} onChange={set('firstName')} error={e.firstName} />
+      <Field id="middleName" label="Middle name (optional)" autoComplete="additional-name" value={p.middleName} onChange={set('middleName')} error={e.middleName} />
+      <Field id="birthDate" label="Date of birth" type="date" max={today} value={p.birthDate} onChange={set('birthDate')} error={e.birthDate} />
+      <Field id="city" label="City" autoComplete="address-level2" value={p.city} onChange={set('city')} error={e.city} />
       <fieldset>
-        <legend className="mb-1.5 text-sm font-semibold text-ink">Пол</legend>
-        <p className="mb-2 text-[13px] text-muted">Нужен, чтобы показывать соответствующие нормативы физической подготовки.</p>
+        <legend className="mb-1.5 text-sm font-semibold text-ink">Gender</legend>
+        <p className="mb-2 text-[13px] text-muted">Used to show the applicable fitness test standards.</p>
         <div className="grid grid-cols-2 gap-2">
           {(
             [
-              ['male', 'Мужской'],
-              ['female', 'Женский'],
+              ['male', 'Male'],
+              ['female', 'Female'],
             ] as const
           ).map(([v, l]) => (
             <label
@@ -90,15 +90,15 @@ export function ProfileSetupPage() {
         <div className="mb-5 flex items-center gap-3">
           <LogoMark className="h-10 w-10" />
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-gold-dark">Шаг 1 из 2</p>
-            <h1 className="text-xl font-semibold text-ink">Профиль абитуриента</h1>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-gold-dark">Step 1 of 2</p>
+            <h1 className="text-xl font-semibold text-ink">Applicant profile</h1>
           </div>
         </div>
         <ProfileForm
           initial={state.profile}
-          submitLabel="Сохранить и продолжить"
+          submitLabel="Save and continue"
           onSaved={() => {
-            toast('Профиль сохранён');
+            toast('Profile saved');
             navigate(state.selectedAcademy ? '/home' : '/onboarding/academies', { replace: true });
           }}
         />

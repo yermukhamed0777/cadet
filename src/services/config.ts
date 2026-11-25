@@ -1,4 +1,4 @@
-/** Конфигурация из переменных окружения (только публичные значения). */
+/** Configuration from environment variables (public values only). */
 const env = import.meta.env;
 
 export type AuthMode = 'demo' | 'production';
@@ -10,7 +10,7 @@ export const config = {
   oauthRedirectPath: env.VITE_OAUTH_REDIRECT_PATH || '/auth/callback',
 };
 
-/** Google OAuth доступен только при наличии backend и Client ID */
+/** Google OAuth is available only with a backend and a Client ID */
 export const isGoogleConfigured = () =>
   config.authMode === 'production' && Boolean(config.apiUrl) && Boolean(config.googleClientId);
 

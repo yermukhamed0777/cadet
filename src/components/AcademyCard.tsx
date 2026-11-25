@@ -24,11 +24,11 @@ export function AcademyCard({ academy, selected, index }: { academy: Academy; se
           <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
           {academy.city}
           <span aria-hidden>·</span>
-          {count} {pluralRu(count, ['программа', 'программы', 'программ'])} в базе
+          {count} {pluralRu(count, ['program', 'programs', 'programs'])} in the catalog
         </p>
         {selected && (
           <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-gold/15 px-2 py-0.5 text-[12px] font-semibold text-navy">
-            <CheckCircle2 className="h-3.5 w-3.5 text-gold-dark" aria-hidden /> Ваша академия
+            <CheckCircle2 className="h-3.5 w-3.5 text-gold-dark" aria-hidden /> Your academy
           </p>
         )}
       </div>

@@ -22,27 +22,27 @@ export function ProfilePage() {
   const spec = academyService.specialty(state.selectedSpecialty);
 
   const rows: [string, string][] = [
-    ['ФИО', [p.lastName, p.firstName, p.middleName].filter(Boolean).join(' ')],
-    ['Дата рождения', formatDate(p.birthDate)],
-    ['Город', p.city],
-    ['Пол', p.gender === 'male' ? 'Мужской' : 'Женский'],
+    ['Full name', [p.lastName, p.firstName, p.middleName].filter(Boolean).join(' ')],
+    ['Date of birth', formatDate(p.birthDate)],
+    ['City', p.city],
+    ['Gender', p.gender === 'male' ? 'Male' : 'Female'],
     ['Email', session?.user.email ?? '—'],
-    ['Академия', academy?.title ?? 'Не выбрана'],
-    ['Специальность', spec ? `${spec.code ? spec.code + ' · ' : ''}${spec.title}` : 'Не выбрана'],
+    ['Academy', academy?.title ?? 'Not selected'],
+    ['Program', spec ? `${spec.code ? spec.code + ' · ' : ''}${spec.title}` : 'Not selected'],
   ];
 
   const actions = [
-    { to: '/profile/edit', label: 'Редактировать профиль', Icon: Pencil },
-    { to: '/academies', label: 'Изменить академию', Icon: Landmark },
-    { to: academy ? `/academies/${academy.id}/specialties` : '/academies', label: 'Изменить специальность', Icon: GraduationCap },
-    { to: '/profile/notifications', label: 'Настройки уведомлений', Icon: Bell },
-    { to: '/news', label: 'Новости', Icon: Newspaper },
-    { to: '/support', label: 'Поддержка', Icon: LifeBuoy },
+    { to: '/profile/edit', label: 'Edit profile', Icon: Pencil },
+    { to: '/academies', label: 'Change academy', Icon: Landmark },
+    { to: academy ? `/academies/${academy.id}/specialties` : '/academies', label: 'Change program', Icon: GraduationCap },
+    { to: '/profile/notifications', label: 'Notification settings', Icon: Bell },
+    { to: '/news', label: 'News', Icon: Newspaper },
+    { to: '/support', label: 'Support', Icon: LifeBuoy },
   ];
 
   return (
     <>
-      <PageHeader title="Профиль" />
+      <PageHeader title="Profile" />
       <div className="mb-4 flex items-center gap-3">
         <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-navy font-display text-xl font-semibold text-gold">
           {(p.firstName[0] ?? '') + (p.lastName[0] ?? '')}
@@ -64,7 +64,7 @@ export function ProfilePage() {
         </dl>
       </Card>
 
-      <SectionTitle>Действия</SectionTitle>
+      <SectionTitle>Actions</SectionTitle>
       <Card className="!p-0">
         <ul>
           {actions.map(({ to, label, Icon }) => (
@@ -79,13 +79,13 @@ export function ProfilePage() {
         </ul>
       </Card>
       <Button variant="danger" full className="mt-4" icon={<LogOut className="h-4 w-4" />} onClick={() => setConfirm(true)}>
-        Выйти
+        Sign out
       </Button>
 
       <Modal
         open={confirm}
         onClose={() => setConfirm(false)}
-        title="Выйти из аккаунта?"
+        title="Sign out?"
         footer={
           <>
             <Button
@@ -97,19 +97,19 @@ export function ProfilePage() {
                 await logout();
                 setBusy(false);
                 setConfirm(false);
-                toast('Вы вышли из аккаунта', 'info');
+                toast('You have signed out', 'info');
                 navigate('/login', { replace: true });
               }}
             >
-              Выйти
+              Sign out
             </Button>
             <Button variant="secondary" full onClick={() => setConfirm(false)} data-autofocus>
-              Отмена
+              Cancel
             </Button>
           </>
         }
       >
-        <p className="text-muted">{session?.isDemo ? 'Данные демо-аккаунта останутся на этом устройстве — вы сможете войти снова.' : 'Вы сможете войти снова в любой момент.'}</p>
+        <p className="text-muted">{session?.isDemo ? 'Demo account data stays on this device — you can sign in again.' : 'You can sign in again at any time.'}</p>
       </Modal>
     </>
   );

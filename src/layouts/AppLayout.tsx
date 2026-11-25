@@ -14,7 +14,7 @@ export function AppLayout() {
       <main key={pathname} className="mx-auto max-w-2xl animate-fadeUp px-4 pb-[calc(96px+env(safe-area-inset-bottom,0px))]">
         {saveError && (
           <div role="alert" className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-            Изменения не сохранены: {saveError}
+            Changes not saved: {saveError}
           </div>
         )}
         <Outlet />

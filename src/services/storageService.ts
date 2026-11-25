@@ -1,7 +1,7 @@
 /**
- * Абстракция key-value хранилища. Frontend не зависит от конкретной
- * реализации: в demo — localStorage (с резервом в памяти), в production
- * пользовательские данные идут через API (см. profileService).
+ * Key-value storage abstraction. The frontend does not depend on the concrete
+ * implementation: in demo, localStorage (with an in-memory fallback); in
+ * production, user data goes through the API (see profileService).
  */
 export interface KeyValueStore {
   get<T>(key: string): T | null;
@@ -9,7 +9,7 @@ export interface KeyValueStore {
   remove(key: string): void;
 }
 
-const PREFIX = 'bk:';
+const PREFIX = 'cadet:';
 
 class BrowserStore implements KeyValueStore {
   private memory = new Map<string, string>();
@@ -36,7 +36,7 @@ class BrowserStore implements KeyValueStore {
     try {
       window.localStorage.setItem(PREFIX + key, raw);
     } catch {
-      /* хранилище недоступно — остаётся копия в памяти */
+      /* storage unavailable — the in-memory copy remains */
     }
   }
 

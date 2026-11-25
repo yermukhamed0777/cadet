@@ -5,10 +5,10 @@ import { useToast } from '../hooks/useToast';
 import type { NotificationSettings } from '../types';
 
 const topics: { id: keyof NotificationSettings; label: string; text: string }[] = [
-  { id: 'vvk', label: 'ВВК', text: 'Напоминания о документах и обследованиях' },
-  { id: 'fitness', label: 'Физическая подготовка', text: 'Напоминания о нормативах' },
-  { id: 'documents', label: 'Документы', text: 'Статусы чеклиста документов' },
-  { id: 'news', label: 'Новости', text: 'Официальные публикации МВД и академий' },
+  { id: 'vvk', label: 'Medical exam', text: 'Reminders about documents and medical screening' },
+  { id: 'fitness', label: 'Fitness', text: 'Reminders about fitness test standards' },
+  { id: 'documents', label: 'Documents', text: 'Document checklist updates' },
+  { id: 'news', label: 'News', text: 'Official academy and admissions announcements' },
 ];
 
 export function NotificationSettingsPage() {
@@ -17,7 +17,7 @@ export function NotificationSettingsPage() {
   const s = state.notificationSettings;
   return (
     <>
-      <PageHeader title="Настройки уведомлений" back="/profile" />
+      <PageHeader title="Notification settings" back="/profile" />
       <Card className="!p-0">
         <ul>
           {topics.map((t) => (
@@ -34,7 +34,7 @@ export function NotificationSettingsPage() {
                   checked={s[t.id]}
                   onChange={(e) => {
                     setNotificationSettings({ ...s, [t.id]: e.target.checked });
-                    toast(e.target.checked ? `«${t.label}» включены` : `«${t.label}» выключены`, 'info');
+                    toast(e.target.checked ? `${t.label} notifications on` : `${t.label} notifications off`, 'info');
                   }}
                 />
                 <span
@@ -47,7 +47,7 @@ export function NotificationSettingsPage() {
         </ul>
       </Card>
       <p className="mt-3 text-[12.5px] leading-snug text-muted">
-        Настройки управляют уведомлениями внутри приложения. Push-уведомления на телефон появятся после подключения backend (см. README).
+        These settings control in-app notifications. Mobile push notifications will be available once a backend is connected (see README).
       </p>
     </>
   );

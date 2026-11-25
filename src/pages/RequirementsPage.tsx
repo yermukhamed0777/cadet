@@ -11,9 +11,9 @@ export function RequirementsPage() {
   useEffect(() => markRequirementsViewed(), [markRequirementsViewed]);
   return (
     <>
-      <PageHeader title="Требования" back />
+      <PageHeader title="Eligibility & steps" back />
       <RequirementsLinks />
-      <SectionTitle>Этапы поступления</SectionTitle>
+      <SectionTitle>Admission steps</SectionTitle>
       <div className="flex flex-col gap-3">
         {admissionFacts.map((f) => (
           <Card key={f.id}>
@@ -24,7 +24,7 @@ export function RequirementsPage() {
         ))}
       </div>
       <p className="mt-4 text-[12.5px] leading-snug text-muted">
-        Приложение не является официальным ресурсом МВД. Перед подачей документов сверяйте требования с приёмной комиссией выбранного вуза.
+        This app is not an official admissions resource. Before submitting documents, confirm requirements with your chosen academy's admissions office.
       </p>
     </>
   );

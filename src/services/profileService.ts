@@ -21,8 +21,8 @@ export const emptyUserState = (): UserState => ({
 const key = (userId: string) => `user:${userId}:state`;
 
 /**
- * Хранение пользовательских данных.
- * demo — локально на устройстве; production — GET/PUT /me/state на backend.
+ * User state storage.
+ * demo — local on the device; production — GET/PUT /me/state on the backend.
  */
 export const profileService = {
   async load(userId: string): Promise<UserState> {

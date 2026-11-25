@@ -4,11 +4,11 @@ import { buildPath, readiness } from '../utils/progress';
 
 export function useAppState() {
   const ctx = useContext(AppStateContext);
-  if (!ctx) throw new Error('useAppState вне AppStateProvider');
+  if (!ctx) throw new Error('useAppState outside AppStateProvider');
   return ctx;
 }
 
-/** Этапы пути и готовность, рассчитанные из фактического состояния */
+/** Path stages and readiness derived from the actual state */
 export function usePath() {
   const { state } = useAppState();
   return useMemo(() => {

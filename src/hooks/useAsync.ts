@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-/** Загрузка асинхронных данных с состояниями loading / error */
+/** Load async data with loading / error states */
 export function useAsync<T>(fn: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +13,7 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[] = []) {
     setError(null);
     fn()
       .then((d) => !cancelled && setData(d))
-      .catch((e: Error) => !cancelled && setError(e.message || 'Ошибка загрузки'))
+      .catch((e: Error) => !cancelled && setError(e.message || 'Failed to load'))
       .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;

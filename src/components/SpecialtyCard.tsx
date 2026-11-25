@@ -14,18 +14,18 @@ export function SpecialtyCard({ s, selected }: { s: Specialty; selected?: boolea
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-muted">
         <span className="inline-flex items-center gap-1">
           <Clock className="h-3.5 w-3.5" aria-hidden />
-          {s.duration ?? 'Срок: нет данных'}
+          {s.duration ?? 'Duration: no data'}
         </span>
         <span className="inline-flex items-center gap-1">
           <GraduationCap className="h-3.5 w-3.5" aria-hidden />
           {s.level}
         </span>
       </div>
-      <p className="mt-2 line-clamp-3 text-[14px] leading-snug text-ink/80">{s.summary ?? 'Описание программы в проверенных источниках не найдено.'}</p>
+      <p className="mt-2 line-clamp-3 text-[14px] leading-snug text-ink/80">{s.summary ?? 'No verified program description found.'}</p>
       <div className="mt-3 flex items-center justify-between gap-2">
         {selected ? (
           <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-navy">
-            <CheckCircle2 className="h-4 w-4 text-gold-dark" aria-hidden /> Выбрана
+            <CheckCircle2 className="h-4 w-4 text-gold-dark" aria-hidden /> Selected
           </span>
         ) : (
           <span />
@@ -34,7 +34,7 @@ export function SpecialtyCard({ s, selected }: { s: Specialty; selected?: boolea
           to={`/specialties/${s.id}`}
           className="inline-flex min-h-[44px] items-center rounded-xl bg-navy px-4 text-sm font-semibold text-white transition active:scale-[0.97] hover:bg-navy-dark"
         >
-          Подробнее
+          View details
         </Link>
       </div>
     </article>

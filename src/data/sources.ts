@@ -1,32 +1,31 @@
 import type { SourceRef } from '../types';
 
-/** Дата последней ручной сверки данных с официальными источниками */
-export const CHECKED_AT = '2026-09-27';
+/** Date of the last manual check against official sources */
+export const CHECKED_AT = '2026-11-25';
 
 export const URLS = {
-  mvdPage: 'https://www.gov.kz/memleket/entities/police/activities/10766?lang=ru',
-  almatyHome: 'https://alpolac.edu.kz/ru/almatinskaya-akademiya-mvd-rk/',
-  almatyApplicants: 'https://alpolac.edu.kz/ru/postupayushhim/',
-  almatyEducation: 'https://alpolac.edu.kz/ru/obrazovanie/',
-  almatyContacts: 'https://alpolac.edu.kz/ru/kontakty/',
-  almatyEn: 'https://alpolac.edu.kz/en/',
-  karagandaHome: 'https://kpa.edu.kz/',
-  karagandaPrograms: 'https://kpa.edu.kz/bilim-beru-baghdarlamalary-2/',
-  karagandaDorm: 'https://kpa.edu.kz/obshhezhitie-kursantov-kz/',
-  kostanayHome: 'https://qpa.edu.kz/',
-  kostanayLegacy: 'https://kostacademy.edu.kz/vakansii_rus/',
-  kostanayEgov: 'https://egov.kz/cms/ru/articles/university_degree/akadem_shknb',
-  aktobeHome: 'https://auimvd.edu.kz/',
-  aktobeApplicants: 'https://auimvd.edu.kz/ru/enrollee/',
-  aktobeContacts: 'https://auimvd.edu.kz/en/contacts/',
-  polisiaDigital2026:
-    'https://polisia.kz/ru/priem-v-vuzy-mvd-stal-polnost-yu-tsifrovym-s-15-iyulya-startuet-etap-sdachi-fizicheskih-normativov/',
-  kazinformDigital2026: 'https://www.inform.kz/ru/priem-vvuzi-mvd-kazahstana-stal-polnostyu-tsifrovim-84f2fa3c',
-  kazinformFakeSms2026:
-    'https://www.inform.kz/ru/abiturientov-predupredili-o-feykovih-sms-o-zachislenii-v-uchebnie-zavedeniya-mvd-327f8e31',
-  polisiaQyzmet2025:
-    'https://polisia.kz/ru/mvd-rk-zapustilo-tsifrovuyu-platformu-qyzmet-police-kz-dlya-onlajn-postupleniya-na-sluzhbu-v-politsiyu/',
-  qyzmetPolice: 'https://qyzmet-police.kz',
+  westpointHome: 'https://www.westpoint.edu/admissions',
+  westpointSteps: 'https://www.westpoint.edu/admissions/steps-to-admission',
+  westpointNominations: 'https://www.westpoint.edu/admissions/steps-to-admission/start-nomination-planning',
+  westpointCfa: 'https://www.westpoint.edu/admissions/steps-to-admission/candidate-fitness-assessment',
+  westpointMajors: 'https://www.westpoint.edu/academics/majors-and-minors',
+  annapolisHome: 'https://www.usna.edu/Admissions/index.php',
+  annapolisApply: 'https://www.usna.edu/Admissions/Apply/index.php',
+  annapolisNominations: 'https://www.usna.edu/Admissions/Apply/Nomination-Sources.php',
+  annapolisCfa: 'https://www.usna.edu/Admissions/Candidate-Fitness-Assessment.php',
+  annapolisAcademics: 'https://www.usna.edu/Admissions/Academics/index.php',
+  annapolisNews: 'https://www.usna.edu/NewsCenter/2025/11/index.php',
+  coloradoHome: 'https://www.usafa.edu/admissions/',
+  coloradoRequirements: 'https://www.usafa.edu/admissions/commitment/requirements/',
+  coloradoNominations: 'https://www.usafa.edu/admissions/commitment/nominations/',
+  coloradoMajors: 'https://www.usafa.edu/academics/majors-minors/',
+  newLondonRequirements: 'https://uscga.edu/admissions/admission-requirements/',
+  newLondonApply: 'https://uscga.edu/admissions/apply/',
+  newLondonAcademics: 'https://uscga.edu/academics/academic-programs/',
+  kingsPointHome: 'https://www.usmma.edu/admissions',
+  kingsPointSteps: 'https://www.usmma.edu/admissions/8-steps-admission',
+  dodmerb: 'https://www.dha.mil/dodmerb',
+  whiteHouseNomination: 'https://www.whitehouse.gov/service-academy-nomination/',
 } as const;
 
 const ref = (
@@ -38,37 +37,19 @@ const ref = (
 ): SourceRef => ({ source, sourceUrl, checkedAt: CHECKED_AT, applicableYear, status, note });
 
 export const SRC = {
-  almatySite: (note?: string) =>
-    ref('Официальный сайт Алматинской академии МВД РК', URLS.almatyHome, 'verified', 2026, note),
-  almatyApplicants: (note?: string) =>
-    ref('Алматинская академия МВД РК — «Поступающим»', URLS.almatyApplicants, 'verified', 2026, note),
-  almatyEducation: (note?: string) =>
-    ref('Алматинская академия МВД РК — «Образование»', URLS.almatyEducation, 'verified', 2026, note),
-  karagandaSite: (note?: string) =>
-    ref('Официальный сайт Карагандинской академии МВД РК', URLS.karagandaHome, 'verified', 2026, note),
-  karagandaPrograms: (note?: string) =>
-    ref('Карагандинская академия МВД РК — «Образовательные программы»', URLS.karagandaPrograms, 'verified', 2026, note),
-  kostanayLegacy: (note?: string) =>
-    ref('Официальный сайт Костанайской академии МВД РК (kostacademy.edu.kz)', URLS.kostanayLegacy, 'verified', null, note),
-  kostanayEgov: (note?: string) =>
-    ref('Портал электронного правительства eGov.kz', URLS.kostanayEgov, 'verified', null, note),
-  kostanayUnverified: (note?: string) =>
-    ref('Официальный сайт Костанайской академии МВД РК', URLS.kostanayHome, 'needs_review', 2026, note),
-  aktobeApplicants: (note?: string) =>
-    ref('Актюбинский юридический институт МВД РК — «Абитуриентам»', URLS.aktobeApplicants, 'verified', null, note),
-  aktobeContacts: (note?: string) =>
-    ref('Актюбинский юридический институт МВД РК — «Контакты»', URLS.aktobeContacts, 'verified', null, note),
-  mvdUnverified: (note?: string) =>
-    ref('МВД РК — страница «Ведомственные учебные заведения»', URLS.mvdPage, 'needs_review', 2026, note),
-  mvd2026Digital: (note?: string) =>
-    ref('МВД РК (Polisia.kz), через МИА «Казинформ»', URLS.polisiaDigital2026, 'verified', 2026, note),
-  userArchive2025: (note?: string) =>
-    ref(
-      'Список 2025 года, предоставленный заказчиком (официальный документ не приложен)',
-      URLS.mvdPage,
-      'archive',
-      2025,
-      note,
-    ),
-  none: (note = 'Официальный источник не найден') => ref('Нет подтверждённого источника', '', 'needs_review', null, note),
+  westpoint: (note?: string) =>
+    ref('U.S. Military Academy (West Point) — Admissions', URLS.westpointHome, 'verified', null, note),
+  annapolis: (note?: string) =>
+    ref('U.S. Naval Academy (Annapolis) — Admissions', URLS.annapolisHome, 'verified', null, note),
+  colorado: (note?: string) =>
+    ref('U.S. Air Force Academy — Admissions', URLS.coloradoHome, 'verified', null, note),
+  newLondon: (note?: string) =>
+    ref('U.S. Coast Guard Academy (New London) — Admissions', URLS.newLondonRequirements, 'verified', null, note),
+  kingsPoint: (note?: string) =>
+    ref('U.S. Merchant Marine Academy (Kings Point) — Admissions', URLS.kingsPointHome, 'verified', 2027, note),
+  dodmerb: (note?: string) =>
+    ref('DoDMERB — Department of Defense Medical Examination Review Board', URLS.dodmerb, 'verified', null, note),
+  whiteHouse: (note?: string) =>
+    ref('The White House — Service Academy Nomination', URLS.whiteHouseNomination, 'verified', null, note),
+  none: (note = 'No official source confirmed') => ref('No confirmed source', '', 'needs_review', null, note),
 };

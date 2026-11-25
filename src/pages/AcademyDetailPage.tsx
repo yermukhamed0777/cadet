@@ -50,11 +50,11 @@ export function AcademyDetailPage() {
         <div className="mt-3">
           {isSelected ? (
             <p className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1.5 text-[13px] font-semibold text-navy">
-              <CheckCircle2 className="h-4 w-4 text-gold-dark" aria-hidden /> Вы выбрали эту академию
+              <CheckCircle2 className="h-4 w-4 text-gold-dark" aria-hidden /> You selected this academy
             </p>
           ) : (
             <Button variant="gold" full onClick={() => setConfirm(true)}>
-              Выбрать эту академию
+              Select this academy
             </Button>
           )}
         </div>
@@ -62,14 +62,14 @@ export function AcademyDetailPage() {
 
       <div className="sticky z-20 -mx-4 mb-4 bg-page/95 px-4 py-2 backdrop-blur" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 62px)' }}>
         <Tabs<Tab>
-          label="Разделы академии"
+          label="Academy sections"
           value={tab}
           onChange={changeTab}
           tabs={[
-            { id: 'about', label: 'Об академии' },
-            { id: 'specialties', label: 'Специальности' },
-            { id: 'requirements', label: 'Требования' },
-            { id: 'path', label: 'Мой путь' },
+            { id: 'about', label: 'About' },
+            { id: 'specialties', label: 'Programs' },
+            { id: 'requirements', label: 'Eligibility & steps' },
+            { id: 'path', label: 'My Path' },
           ]}
         />
       </div>
@@ -82,7 +82,7 @@ export function AcademyDetailPage() {
       <Modal
         open={confirm}
         onClose={() => setConfirm(false)}
-        title="Выбрать академию?"
+        title="Select this academy?"
         footer={
           <>
             <Button
@@ -91,22 +91,22 @@ export function AcademyDetailPage() {
               onClick={() => {
                 selectAcademy(academy.id);
                 setConfirm(false);
-                toast('Академия выбрана');
+                toast('Academy selected');
                 changeTab('specialties');
               }}
             >
-              Подтвердить
+              Confirm
             </Button>
             <Button variant="secondary" full onClick={() => setConfirm(false)}>
-              Отмена
+              Cancel
             </Button>
           </>
         }
       >
-        <p className="text-muted">Вы выбираете:</p>
+        <p className="text-muted">You are selecting:</p>
         <p className="mt-1 font-semibold">{academy.title}</p>
         {state.selectedSpecialty && academyService.specialty(state.selectedSpecialty)?.academyId !== academy.id && (
-          <p className="mt-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">Ранее выбранная специальность относится к другой академии и будет сброшена.</p>
+          <p className="mt-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">Your previously selected program belongs to another academy and will be cleared.</p>
         )}
       </Modal>
     </>
@@ -119,20 +119,20 @@ function AboutTab({ academy }: { academy: Academy }) {
     <>
       <Card>
         <dl>
-          <FactRow label="Город" fact={{ ...academy.address, value: academy.city }} />
-          <FactRow label="Адрес" fact={academy.address} />
-          <FactRow label="Год основания" fact={academy.founded} />
-          <FactRow label="Кратко об истории" fact={academy.history} />
-          <FactRow label="Направления подготовки" fact={academy.directions} />
-          <FactRow label="Условия обучения" fact={academy.studyConditions} />
-          <FactRow label="Общежитие" fact={academy.dormitory} />
-          <FactRow label="Питание" fact={academy.meals} />
-          <FactRow label="Стипендия" fact={academy.stipend} />
-          <FactRow label="Трудоустройство" fact={academy.employment} />
+          <FactRow label="City" fact={{ ...academy.nameRef, value: academy.city }} />
+          <FactRow label="Address" fact={academy.address} />
+          <FactRow label="Founded" fact={academy.founded} />
+          <FactRow label="History at a glance" fact={academy.history} />
+          <FactRow label="Fields of study" fact={academy.directions} />
+          <FactRow label="Study conditions" fact={academy.studyConditions} />
+          <FactRow label="Housing" fact={academy.dormitory} />
+          <FactRow label="Meals" fact={academy.meals} />
+          <FactRow label="Stipend" fact={academy.stipend} />
+          <FactRow label="Career outcomes" fact={academy.employment} />
         </dl>
       </Card>
 
-      <SectionTitle>Официальные контакты</SectionTitle>
+      <SectionTitle>Official contacts</SectionTitle>
       <Card className="!p-0">
         <ul>
           {academy.contacts.map((c) => {
@@ -162,7 +162,7 @@ function AboutTab({ academy }: { academy: Academy }) {
         rel="noopener noreferrer"
         className="mt-4 flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-line bg-white font-semibold text-navy"
       >
-        Официальный сайт <ExternalLink className="h-4 w-4" aria-hidden />
+        Official website <ExternalLink className="h-4 w-4" aria-hidden />
       </a>
     </>
   );
@@ -171,12 +171,12 @@ function AboutTab({ academy }: { academy: Academy }) {
 function SpecialtiesTab({ academy }: { academy: Academy }) {
   const { state } = useAppState();
   const list = academyService.specialties(academy.id);
-  if (!list.length) return <EmptyState title="Программы не найдены" text="Подтверждённых образовательных программ нет." />;
+  if (!list.length) return <EmptyState title="No programs found" text="No verified academic programs are available." />;
   return (
     <div className="flex flex-col gap-3">
       <p className="flex gap-2 rounded-xl bg-white p-3 text-[13px] leading-snug text-muted shadow-card">
         <Info className="mt-0.5 h-4 w-4 shrink-0 text-navy-600" aria-hidden />
-        Названия приведены так, как указаны в источнике. Если источники расходятся, это отмечено в карточке программы.
+        Names appear as listed in the source. Any discrepancies between sources are noted on the program card.
       </p>
       {list.map((s) => (
         <SpecialtyCard key={s.id} s={s} selected={state.selectedSpecialty === s.id} />
@@ -188,9 +188,9 @@ function SpecialtiesTab({ academy }: { academy: Academy }) {
 export function RequirementsLinks() {
   const { state } = useAppState();
   const items = [
-    { to: '/vvk', title: 'ВВК', text: 'Чеклист военно-врачебной комиссии', Icon: Stethoscope, meta: `${Object.values(state.vvkProgress).filter(Boolean).length} отмечено` },
-    { to: '/documents', title: 'Документы', text: 'Статус каждого документа', Icon: FileText, meta: `${Object.values(state.documentsProgress).filter((v) => v === 'ready').length} готово` },
-    { to: '/fitness', title: 'Физическая подготовка', text: 'Нормативы и ваши результаты', Icon: Dumbbell, meta: `${state.fitnessResults.length} результатов` },
+    { to: '/vvk', title: 'Medical exam', text: 'DoDMERB medical screening checklist', Icon: Stethoscope, meta: `${Object.values(state.vvkProgress).filter(Boolean).length} checked` },
+    { to: '/documents', title: 'Documents', text: 'Status of each document', Icon: FileText, meta: `${Object.values(state.documentsProgress).filter((v) => v === 'ready').length} ready` },
+    { to: '/fitness', title: 'Fitness', text: 'CFA standards and your results', Icon: Dumbbell, meta: `${state.fitnessResults.length} results` },
   ];
   return (
     <div className="flex flex-col gap-3">
@@ -216,7 +216,7 @@ function RequirementsTab() {
     <>
       <RequirementsLinks />
       <Link to="/requirements" className="mt-4 flex min-h-[48px] items-center justify-center gap-1 font-semibold text-navy">
-        Этапы и общие требования <ChevronRight className="h-4 w-4" aria-hidden />
+        Steps and general eligibility <ChevronRight className="h-4 w-4" aria-hidden />
       </Link>
     </>
   );
@@ -229,18 +229,18 @@ function PathTab({ academy }: { academy: Academy }) {
   const isMine = state.selectedAcademy === academy.id;
   return (
     <Card>
-      {!isMine && <p className="mb-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">Эта академия не выбрана. Путь рассчитывается для выбранной академии.</p>}
-      <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Готовность</p>
+      {!isMine && <p className="mb-3 rounded-lg bg-amber-50 p-2.5 text-sm text-amber-900">This academy is not selected. Your path is calculated for the academy you selected.</p>}
+      <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Readiness</p>
       <p className="font-display text-4xl font-semibold text-navy tabular-nums">{percent}%</p>
       <div className="mt-2">
-        <ProgressBar value={percent / 100} label="Готовность" />
+        <ProgressBar value={percent / 100} label="Readiness" />
       </div>
       <p className="mt-2 text-sm text-muted">
-        {done} из {total} этапов · Специальность: {spec?.title ?? 'не выбрана'}
+        {done} of {total} steps · Program: {spec?.title ?? 'not selected'}
       </p>
-      {next && <p className="mt-2 text-sm">Следующий шаг: <b>{next.title}</b></p>}
+      {next && <p className="mt-2 text-sm">Next step: <b>{next.title}</b></p>}
       <Link to="/my-path" className="mt-4 flex min-h-[48px] items-center justify-center rounded-xl bg-navy font-semibold text-white">
-        Открыть «Мой путь»
+        Open My Path
       </Link>
     </Card>
   );

@@ -3,24 +3,24 @@ import { useAuth } from '../hooks/useAuth';
 import { useAppState } from '../hooks/useAppState';
 import { ErrorState, LoadingState } from './ui';
 
-/** Только для авторизованных. Неавторизованный пользователь уходит на /login */
+/** Authenticated users only. Unauthenticated users are sent to /login */
 export function RequireAuth() {
   const { session, ready } = useAuth();
   const { status, error, reload } = useAppState();
   const location = useLocation();
   if (!ready) return <LoadingState />;
   if (!session) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  if (status === 'loading') return <LoadingState text="Загружаем ваш профиль…" />;
+  if (status === 'loading') return <LoadingState text="Loading your profile…" />;
   if (status === 'error')
     return (
       <div className="p-4">
-        <ErrorState text={error ?? 'Ошибка загрузки'} onRetry={reload} />
+        <ErrorState text={error ?? 'Failed to load'} onRetry={reload} />
       </div>
     );
   return <Outlet />;
 }
 
-/** Требует заполненного профиля */
+/** Requires a completed profile */
 export function RequireProfile() {
   const { state } = useAppState();
   if (!state.profile) return <Navigate to="/profile/setup" replace />;

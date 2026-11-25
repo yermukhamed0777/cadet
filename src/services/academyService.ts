@@ -3,8 +3,8 @@ import { specialties } from '../data/specialties';
 import type { Academy, AcademyId, Specialty } from '../types';
 
 /**
- * Доступ к справочникам академий и программ. Сейчас — статические данные из /data;
- * при подключении CMS/API достаточно заменить реализацию этих функций.
+ * Access to the school and program catalogs. Currently static data from /data;
+ * swapping in a CMS/API only requires changing these functions.
  */
 export const academyService = {
   list: (): Academy[] => academies,

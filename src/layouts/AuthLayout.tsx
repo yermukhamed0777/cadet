@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Wordmark } from '../components/ui';
 
-/** Экран авторизации: тёмный бренд-блок сверху, форма на светлой карточке */
+/** Sign-in screen: dark brand block on top, form on a light card */
 export function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-navy">

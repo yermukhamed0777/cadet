@@ -19,22 +19,22 @@ export function NotificationsPage() {
   return (
     <>
       <PageHeader
-        title="Уведомления"
-        subtitle={unread ? `Непрочитанных: ${unread}` : 'Все прочитаны'}
+        title="Notifications"
+        subtitle={unread ? `${unread} unread` : 'All read'}
         back
         right={
-          <Link to="/profile/notifications" className="grid h-11 w-11 place-items-center rounded-full text-white hover:bg-white/10" aria-label="Настройки уведомлений">
+          <Link to="/profile/notifications" className="grid h-11 w-11 place-items-center rounded-full text-white hover:bg-white/10" aria-label="Notification settings">
             <Settings className="h-5 w-5" />
           </Link>
         }
       />
       {list.length === 0 ? (
-        <EmptyState icon={<BellOff className="h-8 w-8" aria-hidden />} title="Уведомлений нет" text="Включите темы в настройках уведомлений." />
+        <EmptyState icon={<BellOff className="h-8 w-8" aria-hidden />} title="No notifications" text="Turn on topics in notification settings." />
       ) : (
         <>
           <div className="mb-3 flex justify-end">
             <Button variant="ghost" size="sm" onClick={markAllNotificationsRead} disabled={!unread}>
-              Прочитать все
+              Mark all read
             </Button>
           </div>
           <ul className="flex flex-col gap-2">
@@ -55,7 +55,7 @@ export function NotificationsPage() {
                     <span className="min-w-0">
                       <span className="flex items-center gap-2">
                         <span className="font-semibold text-ink">{n.title}</span>
-                        {!n.read && <span className="h-2 w-2 rounded-full bg-gold" aria-label="Не прочитано" />}
+                        {!n.read && <span className="h-2 w-2 rounded-full bg-gold" aria-label="Unread" />}
                       </span>
                       <span className="mt-0.5 block text-[14px] leading-snug text-ink/85">{n.body}</span>
                       <span className="mt-1 block text-[12px] text-muted">{formatDate(n.date)}</span>
@@ -64,9 +64,9 @@ export function NotificationsPage() {
                   <button
                     onClick={() => markNotificationRead(n.id, !n.read)}
                     className="shrink-0 self-start px-3 py-4 text-[12px] font-semibold text-navy-600"
-                    aria-label={n.read ? 'Отметить как непрочитанное' : 'Отметить как прочитанное'}
+                    aria-label={n.read ? 'Mark as unread' : 'Mark as read'}
                   >
-                    {n.read ? 'Не прочит.' : 'Прочитано'}
+                    {n.read ? 'Unread' : 'Read'}
                   </button>
                 </li>
               );

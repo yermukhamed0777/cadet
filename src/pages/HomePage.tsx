@@ -10,14 +10,14 @@ import { DemoBanner } from '../components/DemoBanner';
 import { useAuth } from '../hooks/useAuth';
 
 const quick = [
-  { to: '/documents', label: 'Документы', Icon: FileText },
-  { to: '/vvk', label: 'ВВК', Icon: Stethoscope },
-  { to: '/fitness', label: 'Нормативы', Icon: Dumbbell },
-  { to: '/news', label: 'Новости', Icon: Newspaper },
-  { to: '/compare', label: 'Сравнение', Icon: Scale },
-  { to: '/vvk/map', label: 'ВВК на карте', Icon: MapPinned },
-  { to: '/support', label: 'Поддержка', Icon: LifeBuoy },
-  { to: '/academies', label: 'Академии', Icon: Landmark },
+  { to: '/documents', label: 'Documents', Icon: FileText },
+  { to: '/vvk', label: 'Medical exam', Icon: Stethoscope },
+  { to: '/fitness', label: 'Fitness test', Icon: Dumbbell },
+  { to: '/news', label: 'News', Icon: Newspaper },
+  { to: '/compare', label: 'Compare', Icon: Scale },
+  { to: '/vvk/map', label: 'Medical exam map', Icon: MapPinned },
+  { to: '/support', label: 'Support', Icon: LifeBuoy },
+  { to: '/academies', label: 'Academies', Icon: Landmark },
 ];
 
 export function HomePage() {
@@ -36,9 +36,9 @@ export function HomePage() {
       >
         <div className="mx-auto flex max-w-2xl items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gold">Bolashaq Kursant</p>
-            <h1 className="mt-2 truncate text-[26px] font-semibold leading-tight">Привет, {state.profile?.firstName}</h1>
-            <p className="text-sm text-white/65">Твой путь в академию</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-gold">CADET</p>
+            <h1 className="mt-2 truncate text-[26px] font-semibold leading-tight">Hello, {state.profile?.firstName}</h1>
+            <p className="text-sm text-white/65">Your path to commission</p>
           </div>
           <NotificationBell />
         </div>
@@ -46,18 +46,18 @@ export function HomePage() {
 
       <div className="-mt-[88px] flex flex-col gap-3">
         <Card>
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Твоя академия</p>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Your academy</p>
           {academy ? (
             <Link to={`/academies/${academy.id}`} className="mt-0.5 block font-semibold leading-snug text-ink [overflow-wrap:anywhere]">
               {academy.title}
             </Link>
           ) : (
             <Link to="/academies" className="mt-1 inline-flex min-h-[36px] items-center gap-1 font-semibold text-navy-600">
-              Выбрать академию <ArrowRight className="h-4 w-4" aria-hidden />
+              Select an academy <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           )}
           <div className="my-3 h-px bg-line" />
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Специальность</p>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">Program</p>
           {spec ? (
             <Link to={`/specialties/${spec.id}`} className="mt-0.5 block font-semibold leading-snug text-ink [overflow-wrap:anywhere]">
               {spec.code ? `${spec.code} · ` : ''}
@@ -68,26 +68,26 @@ export function HomePage() {
               to={academy ? `/academies/${academy.id}/specialties` : '/academies'}
               className="mt-1 inline-flex min-h-[36px] items-center gap-1 font-semibold text-navy-600"
             >
-              Выбрать специальность <ArrowRight className="h-4 w-4" aria-hidden />
+              Select a program <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           )}
         </Card>
 
         <Link to="/my-path" className="block rounded-xl2 bg-navy-dark p-5 text-white shadow-lift transition active:scale-[0.99]">
           <div className="flex items-baseline justify-between">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-white/60">Готовность</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-white/60">Your readiness</p>
             <p className="text-[12px] text-white/60 tabular-nums">
-              {done} / {total} этапов
+              {done} / {total} steps
             </p>
           </div>
           <p className="mt-1 font-display text-[56px] font-semibold leading-none text-gold tabular-nums">{percent}%</p>
           <div className="mt-3">
-            <ProgressBar value={percent / 100} label="Готовность к поступлению" tone="light" size="lg" />
+            <ProgressBar value={percent / 100} label="Readiness for appointment" tone="light" size="lg" />
           </div>
           <div className="mt-4 flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-[12px] text-white/60">Следующий шаг:</p>
-              <p className="truncate font-semibold">{next ? next.title : 'Все этапы отмечены'}</p>
+              <p className="text-[12px] text-white/60">Next step:</p>
+              <p className="truncate font-semibold">{next ? next.title : 'All steps complete'}</p>
             </div>
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold text-navy">
               <ArrowRight className="h-5 w-5" aria-hidden />
@@ -96,7 +96,7 @@ export function HomePage() {
         </Link>
       </div>
 
-      <SectionTitle>Разделы</SectionTitle>
+      <SectionTitle>Explore</SectionTitle>
       <div className="grid grid-cols-4 gap-2">
         {quick.map(({ to, label, Icon }) => (
           <Link key={to} to={to} className="flex min-h-[84px] flex-col items-center justify-center gap-1.5 rounded-xl border border-line bg-white px-0.5 py-1.5 text-center shadow-card transition active:scale-95">
@@ -108,7 +108,7 @@ export function HomePage() {
 
       {latest && (
         <>
-          <SectionTitle action={<Link to="/news" className="py-1 text-sm font-semibold text-navy-600">Все</Link>}>Новости</SectionTitle>
+          <SectionTitle action={<Link to="/news" className="py-1 text-sm font-semibold text-navy-600">All</Link>}>News</SectionTitle>
           <Link to="/news" className="block">
             <Card>
               <div className="mb-1.5 flex flex-wrap items-center gap-2 text-[12px] text-muted">

@@ -1,13 +1,13 @@
 import type { NotificationItem } from '../types';
 
-/** Стартовые уведомления для нового пользователя */
+/** Starter notifications for a new user */
 export const initialNotifications = (): NotificationItem[] => {
   const now = new Date().toISOString();
   return [
     {
-      id: 'welcome-vvk',
-      title: 'ВВК',
-      body: 'Проверь документы и сроки обследований перед прохождением ВВК.',
+      id: 'welcome-medical',
+      title: 'Medical exam',
+      body: 'Review the DoDMERB steps and confirm the deadline with your academy.',
       date: now,
       read: false,
       link: '/vvk',
@@ -15,8 +15,8 @@ export const initialNotifications = (): NotificationItem[] => {
     },
     {
       id: 'welcome-fitness',
-      title: 'Физическая подготовка',
-      body: 'Не забудь проверить актуальные нормативы физической подготовки.',
+      title: 'Fitness test',
+      body: 'Check the official CFA reference scores and log your own results.',
       date: now,
       read: false,
       link: '/fitness',
@@ -24,8 +24,8 @@ export const initialNotifications = (): NotificationItem[] => {
     },
     {
       id: 'welcome-news',
-      title: 'Новости',
-      body: 'МВД предупредило о фейковых SMS о «зачислении». Результаты — только в личном кабинете Qyzmet police.',
+      title: 'Admissions updates',
+      body: 'Official announcements are linked in Updates. Academy decisions come from the academy, not from this tracker.',
       date: now,
       read: false,
       link: '/news',

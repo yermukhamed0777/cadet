@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
-/** Модальное окно: bottom sheet на телефоне, диалог по центру на desktop */
+/** Modal: bottom sheet on mobile, centered dialog on desktop */
 export function Modal({
   open,
   onClose,
@@ -62,7 +62,7 @@ export function Modal({
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line sm:hidden" aria-hidden />
         <div className="mb-3 flex items-start justify-between gap-3">
           <h2 className="text-lg font-semibold leading-snug text-ink">{title}</h2>
-          <button onClick={onClose} className="-mr-2 -mt-1 grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted hover:bg-page" aria-label="Закрыть">
+          <button onClick={onClose} className="-mr-2 -mt-1 grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted hover:bg-page" aria-label="Close">
             <X className="h-5 w-5" />
           </button>
         </div>

@@ -18,9 +18,9 @@ export class AuthError extends Error {}
 const accounts = () => storage.get<Record<string, DemoAccount>>(ACCOUNTS_KEY) ?? {};
 
 /**
- * Сервис авторизации.
- * demo       — аккаунты на этом устройстве, пароль хранится только как PBKDF2-хэш с солью.
- * production — все операции через backend (/auth/*), токен/куки выдаёт сервер.
+ * Authentication service.
+ * demo       — accounts live on this device; only a salted PBKDF2 hash is stored.
+ * production — all operations go through the backend (/auth/*), which issues the token/cookie.
  */
 export const authService = {
   isDemo: isDemoMode,
@@ -41,7 +41,7 @@ export const authService = {
       return this.persist({ ...s, isDemo: false });
     }
     const all = accounts();
-    if (all[normalized]) throw new AuthError('Аккаунт с таким email уже существует. Войдите.');
+    if (all[normalized]) throw new AuthError('An account with this email already exists. Sign in.');
     const { salt, hash } = await hashPassword(password);
     const user: User = { id: randomId(), email: normalized, provider: 'demo', createdAt: new Date().toISOString() };
     storage.set(ACCOUNTS_KEY, { ...all, [normalized]: { user, salt, hash } });
@@ -59,19 +59,19 @@ export const authService = {
     }
     const acc = accounts()[normalized];
     if (!acc || !(await verifyPassword(password, acc.salt, acc.hash))) {
-      throw new AuthError('Неверный email или пароль.');
+      throw new AuthError('Incorrect email or password.');
     }
     return this.persist({ user: acc.user, token: randomId(), isDemo: true });
   },
 
-  /** Запуск Google OAuth: переход на backend, который хранит Client Secret. */
+  /** Start Google OAuth by redirecting to the backend, which holds the Client Secret. */
   startGoogleLogin() {
-    if (!isGoogleConfigured()) throw new AuthError('Вход через Google не настроен.');
+    if (!isGoogleConfigured()) throw new AuthError('Google sign-in is not configured.');
     const redirect = `${window.location.origin}${config.oauthRedirectPath}`;
     window.location.assign(`${config.apiUrl}/auth/google?redirect_uri=${encodeURIComponent(redirect)}`);
   },
 
-  /** Обработка возврата с backend после OAuth: ?token=... */
+  /** Handle the return from the backend after OAuth: ?token=... */
   async completeOAuth(token: string): Promise<Session> {
     setApiToken(token);
     const user = await api<User>('/auth/me');
@@ -84,7 +84,7 @@ export const authService = {
       try {
         await api('/auth/logout', { method: 'POST' });
       } catch {
-        /* всё равно завершаем локальную сессию */
+        /* still end the local session */
       }
     }
     setApiToken(null);

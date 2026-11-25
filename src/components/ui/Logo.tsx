@@ -1,4 +1,4 @@
-/** Wordmark BOLASHAQ KURSANT — собственный знак бренда (не эмблема МВД) */
+/** CADET wordmark — original brand mark, not an official insignia */
 export function LogoMark({ className = 'h-10 w-10' }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
@@ -16,7 +16,7 @@ export function Wordmark({ size = 'lg', tagline = true }: { size?: 'lg' | 'sm'; 
       <div className="flex items-center gap-2.5">
         <LogoMark className="h-8 w-8" />
         <div className="font-display text-[15px] font-semibold uppercase leading-none tracking-[0.12em] text-white">
-          Bolashaq <span className="text-gold">Kursant</span>
+          <span className="text-gold">Cadet</span>
         </div>
       </div>
     );
@@ -26,14 +26,12 @@ export function Wordmark({ size = 'lg', tagline = true }: { size?: 'lg' | 'sm'; 
       <LogoMark className="h-12 w-12" />
       <div>
         <h1 className="font-display text-[40px] font-semibold uppercase leading-[0.95] tracking-[0.06em] text-white">
-          Bolashaq
-          <br />
-          <span className="text-gold">Kursant</span>
+          <span className="text-gold">Cadet</span>
         </h1>
         {tagline && (
           <p className="mt-3 flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.18em] text-white/70">
             <span className="h-px w-6 bg-gold" aria-hidden />
-            Твой путь в академию
+            Your path to commission
           </p>
         )}
       </div>

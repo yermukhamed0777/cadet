@@ -1,141 +1,133 @@
-# BOLASHAQ KURSANT — «Твой путь в академию»
+# CADET — Your path to commission
 
-Мобильное web-приложение (PWA) для абитуриентов ведомственных вузов **МВД Республики Казахстан**:
+A mobile-first PWA that helps applicants to **U.S. federal service academies**
+track the steps from eligibility review to appointment:
 
-- Алматинская академия МВД РК имени М. Есбулатова
-- Карагандинская академия МВД РК имени Б. Бейсенова
-- Костанайская академия МВД РК имени Ш. Кабылбаева
-- Актюбинский юридический институт МВД РК имени М. Букенбаева
+- U.S. Military Academy (West Point)
+- U.S. Naval Academy (Annapolis)
+- U.S. Air Force Academy (Colorado Springs)
+- U.S. Coast Guard Academy (New London)
+- U.S. Merchant Marine Academy (Kings Point)
 
-Приложение не является официальным ресурсом МВД. Каждая запись данных содержит источник, дату проверки, год применимости и статус (`verified` / `archive` / `needs_review`).
+This is an independent tracker, **not an official U.S. government or academy
+resource**. Every fact carries an official source, a check date, an applicable
+year and a status (`verified` / `archive` / `needs_review`). Confirmed unknowns
+are shown as “No confirmed data” rather than guessed. The app deliberately does
+**not** predict admission chances or present reference fitness scores as passing
+thresholds.
 
-## Стек
+The project was recovered from a Kazakhstan MVD admissions PWA; the previous
+version is preserved on the `v1-kz-mvd` tag. See `REPOSITIONING.md`.
+
+## Stack
 
 React 18 · TypeScript · Vite 5 · Tailwind CSS 3 · React Router 6 · Lucide React · vite-plugin-pwa (Workbox).
 
-## Установка и запуск
+## Install and run
 
 ```bash
 npm install
-cp .env.example .env    # по умолчанию VITE_AUTH_MODE=demo
-npm run dev             # http://localhost:5173 (флаг --host открывает доступ с телефона в той же Wi-Fi сети)
+cp .env.example .env    # defaults to VITE_AUTH_MODE=demo
+npm run dev             # http://localhost:5173 (--host is already set)
 ```
 
-Открыть с телефона: `npm run dev` выведет адрес вида `http://192.168.x.x:5173` — откройте его на телефоне в той же сети.
-Демо-регистрация использует Web Crypto, который браузеры дают только на `https://` или `localhost`. Для полноценной проверки с телефона используйте production-сборку на HTTPS-хостинге или туннель (например, `npx localtunnel --port 4173`).
-
-### Production build
+Demo registration uses Web Crypto, which browsers expose only on `https://` or
+`localhost`. For phone testing use a production build over HTTPS or a tunnel.
 
 ```bash
-npm run build           # TypeScript-проверка + сборка в dist/ (с service worker)
-npm run preview         # локальный просмотр production-сборки, http://localhost:4173
+npm run build           # TypeScript check + build to dist/ with a service worker
+npm run preview         # local production preview at http://localhost:4173
+npm run build:hash      # dist-hash/ with HashRouter, relative paths, no SW
 ```
 
-`npm run build:hash` — сборка в `dist-hash/` для хостинга без SPA-fallback: HashRouter (`/#/home`), относительные пути, без service worker.
+`dist/` is a static site. Configure an SPA fallback on the host (`/* /index.html 200`
+on Netlify, `rewrites` on Vercel, `try_files` on Nginx). PWA and Web Crypto need HTTPS.
 
-### Деплой
+## Authentication
 
-`dist/` — статический сайт. На хостинге настройте SPA-fallback: все пути → `index.html` (Netlify: `_redirects` с `/* /index.html 200`; Vercel: `rewrites`; Nginx: `try_files $uri /index.html`). Для PWA и Web Crypto нужен HTTPS.
+### Demo mode (default)
 
-## Режимы авторизации
-
-### Demo mode (по умолчанию)
-
-`VITE_AUTH_MODE=demo` или пустой `VITE_API_URL`.
-
-- Аккаунты и данные хранятся только в браузере этого устройства (localStorage, при недоступности — в памяти).
-- Пароль не хранится: сохраняется только PBKDF2-SHA256 хэш (150 000 итераций) со случайной солью.
-- В интерфейсе показывается плашка «Демо-режим». Это не настоящая авторизация.
-- Кнопка «Продолжить с Google» неактивна и подписана, почему.
+`VITE_AUTH_MODE=demo` (or an empty `VITE_API_URL`). Accounts and state live in
+this browser only (`localStorage`, in-memory fallback). The password is stored
+as a PBKDF2-SHA256 hash (150,000 iterations) with a random salt — never in plain
+text. A “Demo mode” notice is shown; Google sign-in stays disabled with an
+explanation.
 
 ### Production mode
 
 ```env
 VITE_AUTH_MODE=production
-VITE_API_URL=https://api.example.kz
+VITE_API_URL=https://api.example.com
 VITE_GOOGLE_CLIENT_ID=xxxxxxxx.apps.googleusercontent.com
 VITE_OAUTH_REDIRECT_PATH=/auth/callback
 ```
 
-## Google OAuth
-
-Во frontend хранится **только публичный Client ID**. Client Secret и обмен кода на токен живут на backend.
-
-1. Google Cloud Console → APIs & Services → Credentials → *Create OAuth client ID* → Web application.
-2. **Authorized JavaScript origins:** `https://ваш-домен`, `http://localhost:5173`.
-3. **Authorized redirect URIs** (на backend): `https://api.ваш-домен/auth/google/callback`.
-4. Client ID → `VITE_GOOGLE_CLIENT_ID` (frontend) и в конфиг backend; Client Secret → только в секреты backend.
-
-Поток:
+Only the public Client ID is stored in the frontend. The Client Secret and the
+code-for-token exchange live on the backend. Flow:
 
 ```
-Кнопка Google → GET {API}/auth/google?redirect_uri={APP}/auth/callback
-→ Google → {API}/auth/google/callback (backend меняет code на токены, создаёт пользователя)
-→ redirect на {APP}/auth/callback?token=<session_token>
-→ frontend: GET {API}/auth/me → сессия
+Google button → GET {API}/auth/google?redirect_uri={APP}/auth/callback
+→ Google → {API}/auth/google/callback (backend exchanges the code)
+→ redirect to {APP}/auth/callback?token=<session_token>
+→ frontend: GET {API}/auth/me
 ```
 
-## Backend-контракт
+## Backend contract
 
-Frontend работает через сервисный слой (`src/services`) и не зависит от конкретного хранилища. В режиме production ожидаются эндпоинты:
+The UI talks to `src/services` and does not depend on a specific store. Expected
+production endpoints:
 
-| Метод | Путь | Назначение |
+| Method | Path | Purpose |
 |---|---|---|
 | POST | `/auth/register` | `{email, password}` → `{user, token}` |
 | POST | `/auth/login` | `{email, password}` → `{user, token}` |
-| GET | `/auth/google` | старт OAuth (redirect) |
-| GET | `/auth/me` | текущий пользователь |
-| POST | `/auth/logout` | завершение сессии |
-| GET / PUT | `/me/state` | профиль, выбор академии/специальности, чеклисты, результаты, уведомления (`UserState` в `src/types`) |
-| GET | `/news` | новости (`NewsItem[]`) — например, из CMS |
+| GET | `/auth/google` | start OAuth (redirect) |
+| GET | `/auth/me` | current user |
+| POST | `/auth/logout` | end session |
+| GET / PUT | `/me/state` | `UserState` (profile, selections, checklists, results, notifications) |
+| GET | `/news` | `NewsItem[]` from a CMS |
 | POST | `/support/messages` | `{subject, message}` |
 
-Токен передаётся в `Authorization: Bearer`, запросы идут с `credentials: 'include'` (подходят и httpOnly-cookie). Подойдёт Supabase / Firebase / собственный сервер: достаточно реализовать эти эндпоинты или заменить реализацию в `authService.ts` и `profileService.ts`.
+Bearer token plus `credentials: 'include'`; a Supabase/Firebase/custom backend
+can be used by replacing the service implementations.
 
-Push-уведомления: подключаются через Web Push (VAPID) на backend; в приложении уже есть центр уведомлений и настройки тем.
+## Where the data lives
 
-## Где обновлять данные
-
-| Что | Файл |
+| What | File |
 |---|---|
-| Академии (адреса, контакты, условия) | `src/data/academies.ts` |
-| Специальности | `src/data/specialties.ts` |
-| Нормативы физподготовки | `src/data/fitness.ts` |
-| Документы | `src/data/documents.ts` |
-| ВВК (чеклист, пункты на карте) | `src/data/vvk.ts` |
-| Новости | `src/data/news.ts` |
-| Этапы и общие требования | `src/data/requirements.ts` |
-| FAQ | `src/data/faq.ts` |
-| Ссылки на источники, дата проверки | `src/data/sources.ts` |
+| Academies (addresses, eligibility, contacts) | `src/data/academies.ts` |
+| Academic programs | `src/data/specialties.ts` |
+| Eligibility, deadlines and steps | `src/data/requirements.ts` |
+| CFA reference scores | `src/data/fitness.ts` |
+| Document checklist | `src/data/documents.ts` |
+| DoDMERB medical checklist | `src/data/vvk.ts` |
+| Verified updates | `src/data/news.ts` |
+| FAQ and starter notifications | `src/data/faq.ts`, `src/data/notifications.ts` |
+| Official source registry and check date | `src/data/sources.ts` |
 
-Правила:
+Rules:
 
-- Не добавляйте данные без источника. Неподтверждённое → `status: 'needs_review'` (в интерфейсе: «Требует уточнения»).
-- Данные прошлого года → `status: 'archive'`, `applicableYear: 2025` («Архивная информация — 2025»).
-- `verified` + `applicableYear: 2026` → «Актуально на 2026». Ставьте только после проверки по официальному источнику.
-- Пункты ВВК на карте (`vvkLocations`) добавляйте только с подтверждённым адресом и источником.
-- После сверки обновите `CHECKED_AT` в `sources.ts`.
+- Do not add a fact without a source. Unconfirmed items → `needs_review`.
+- Previous-cycle material → `archive` with its year.
+- `verified` + `applicableYear` means the item was checked against the linked
+  official page; `CHECKED_AT` in `sources.ts` records the last review.
+- Some official pages block automated fetching. They were checked via a cached
+  or translated view of the **same canonical URL** — the note on those facts
+  says so. Re-check manually before publishing new numbers.
+- Fitness figures are **maximum scores or published averages**, not passing
+  thresholds; the UI marks them `referenceOnly`.
 
-## Структура
+## Structure
 
 ```
 src/
-  components/   UI-кит (ui/), навигация, guards, карточки
-  context/      Auth, AppState (user state), Toast
-  data/         статические справочники с источниками
-  hooks/        useAuth, useAppState/usePath, useToast, useAsync
-  layouts/      AppLayout (нижняя навигация), AuthLayout
-  pages/        экраны
-  services/     auth, profile/support, academy, news, storage, apiClient, config
-  types/        TypeScript-типы
-  utils/        прогресс, нормативы, валидация, криптография, форматирование
+  components/  UI kit (ui/), navigation, guards, cards
+  context/     Auth, AppState, Toast
+  data/        static catalogs with sources
+  hooks/       useAuth, useAppState/usePath, useToast, useAsync
+  layouts/     AppLayout (bottom nav), AuthLayout
+  pages/       screens
+  services/    auth, profile/support, academy, news, storage, apiClient, config
+  types/       TypeScript types
+  utils/       progress, fitness, validation, crypto, formatting
 ```
-
-## Состояние данных на момент сверки (27.09.2026)
-
-- Алматы, Караганда: программы, адреса и контакты сверены с официальными сайтами.
-- Костанай: сайт qpa.edu.kz закрыт для автоматической проверки; программы помечены «Требует уточнения», условия обучения — по eGov.kz.
-- Актобе: адрес и контакты — с официального сайта; перечень программ требует сверки.
-- Страница МВД на gov.kz не открылась при автоматической проверке — данные со ссылкой на неё помечены «Требует уточнения».
-- ВВК и нормативы: актуальные официальные данные 2026 не найдены — показаны архив 2025 (из ТЗ) и таблица с сайта Алматинской академии без указания года.
-- Пункты ВВК: подтверждённых адресов нет, на карте показано «Адрес требует уточнения».

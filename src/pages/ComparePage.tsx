@@ -11,27 +11,27 @@ type Row = { label: string; get: (a: Academy) => Fact<string | string[]> | { val
 
 const factText = (v: string | string[] | null) => (v == null || (Array.isArray(v) && !v.length) ? null : Array.isArray(v) ? v.join('; ') : v);
 
-// Сравниваем только объективные данные. Физическая подготовка, рейтинги и баллы — намеренно не сравниваются.
+// Compare only objective facts. Fitness scores, rankings and estimates are deliberately excluded.
 const rows: Row[] = [
-  { label: 'Город', get: (a) => ({ value: a.city }) },
-  { label: 'Адрес', get: (a) => a.address },
-  { label: 'Год основания', get: (a) => a.founded },
+  { label: 'City', get: (a) => ({ value: a.city }) },
+  { label: 'Address', get: (a) => a.address },
+  { label: 'Founded', get: (a) => a.founded },
   {
-    label: 'Программы',
+    label: 'Programs',
     get: (a) => ({ value: academyService.specialties(a.id).map((s) => (s.code ? `${s.code} ${s.title}` : s.title)) }),
   },
   {
-    label: 'Продолжительность',
+    label: 'Duration',
     get: (a) => {
       const d = Array.from(new Set(academyService.specialties(a.id).map((s) => s.duration).filter(Boolean))) as string[];
       return { value: d.length ? d : null };
     },
   },
-  { label: 'Условия обучения', get: (a) => a.studyConditions },
-  { label: 'Общежитие', get: (a) => a.dormitory },
-  { label: 'Питание', get: (a) => a.meals },
-  { label: 'Стипендия', get: (a) => a.stipend },
-  { label: 'Официальные контакты', get: (a) => ({ value: a.contacts.filter((c) => c.kind !== 'web').map((c) => `${c.label}: ${c.value}`) }) },
+  { label: 'Study conditions', get: (a) => a.studyConditions },
+  { label: 'Housing', get: (a) => a.dormitory },
+  { label: 'Meals', get: (a) => a.meals },
+  { label: 'Stipend', get: (a) => a.stipend },
+  { label: 'Official contacts', get: (a) => ({ value: a.contacts.filter((c) => c.kind !== 'web').map((c) => `${c.label}: ${c.value}`) }) },
 ];
 
 export function ComparePage() {
@@ -42,12 +42,12 @@ export function ComparePage() {
 
   return (
     <>
-      <PageHeader title="Сравнение академий" subtitle="До 3 учреждений" back />
+      <PageHeader title="Compare academies" subtitle="Up to 3 academies" back />
       <p className="mb-3 text-[13px] leading-snug text-muted">
-        Только объективные данные из официальных источников. Без рейтингов, баллов и рекомендаций — выбор за вами.
+        Only objective data from official sources. No rankings, scores, or recommendations — the choice is yours.
       </p>
       <fieldset>
-        <legend className="mb-2 text-sm font-semibold">Выберите академии ({chosen.length}/3)</legend>
+        <legend className="mb-2 text-sm font-semibold">Select academies ({chosen.length}/3)</legend>
         <div className="flex flex-col gap-2">
           {all.map((a) => {
             const on = state.compare.includes(a.id);
@@ -63,7 +63,7 @@ export function ComparePage() {
                   checked={on}
                   disabled={disabled}
                   onChange={() => {
-                    if (!toggleCompare(a.id)) toast('Можно выбрать не более 3 академий', 'error');
+                    if (!toggleCompare(a.id)) toast('You can select up to 3 academies', 'error');
                   }}
                 />
                 <span className="text-[14.5px] font-medium leading-snug">{a.title}</span>
@@ -74,13 +74,13 @@ export function ComparePage() {
       </fieldset>
       {chosen.length > 0 && (
         <Button variant="ghost" size="sm" className="mt-2" onClick={clearCompare}>
-          Сбросить выбор
+          Clear selection
         </Button>
       )}
 
       {chosen.length < 2 ? (
         <div className="mt-4">
-          <EmptyState title="Выберите минимум 2 академии" text="Сравнение появится здесь." />
+          <EmptyState title="Select at least 2 academies" text="Your comparison will appear here." />
         </div>
       ) : (
         <>
@@ -108,7 +108,7 @@ export function ComparePage() {
               </Card>
             </section>
           ))}
-          <SectionTitle>Официальный сайт</SectionTitle>
+          <SectionTitle>Official website</SectionTitle>
           <Card className="!p-0">
             <ul>
               {chosen.map((a) => (

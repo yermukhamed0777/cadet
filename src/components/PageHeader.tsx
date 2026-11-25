@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { NotificationBell } from './NotificationBell';
 
-/** Верхняя панель страницы: назад, заголовок, колокольчик уведомлений */
+/** Page header: back button, title, and notification bell */
 export function PageHeader({ title, back, subtitle, right }: { title: string; back?: string | true; subtitle?: ReactNode; right?: ReactNode }) {
   const navigate = useNavigate();
   const goBack = () => {
@@ -19,7 +19,7 @@ export function PageHeader({ title, back, subtitle, right }: { title: string; ba
     >
       <div className="mx-auto flex max-w-2xl items-center gap-2">
         {back && (
-          <button onClick={goBack} className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full hover:bg-white/10" aria-label="Назад">
+          <button onClick={goBack} className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full hover:bg-white/10" aria-label="Back">
             <ArrowLeft className="h-5 w-5" />
           </button>
         )}

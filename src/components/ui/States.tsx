@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Loader2, Inbox, AlertTriangle } from 'lucide-react';
 import { Button } from './Button';
 
-export function LoadingState({ text = 'Загрузка…' }: { text?: string }) {
+export function LoadingState({ text = 'Loading…' }: { text?: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted" role="status">
       <Loader2 className="h-7 w-7 animate-spin text-navy" aria-hidden />
@@ -29,7 +29,7 @@ export function ErrorState({ text, onRetry }: { text: string; onRetry?: () => vo
       <p className="text-sm font-medium text-red-800">{text}</p>
       {onRetry && (
         <Button variant="secondary" size="sm" onClick={onRetry}>
-          Повторить
+          Retry
         </Button>
       )}
     </div>

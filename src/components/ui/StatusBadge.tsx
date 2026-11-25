@@ -2,9 +2,9 @@ import { ShieldCheck, Archive, AlertCircle } from 'lucide-react';
 import type { VerificationStatus } from '../../types';
 
 export function statusLabel(status: VerificationStatus, year: number | null) {
-  if (status === 'verified') return year === 2026 ? 'Актуально на 2026' : year ? `Подтверждено · ${year}` : 'Подтверждено · год не указан';
-  if (status === 'archive') return `Архивная информация — ${year ?? '2025'}`;
-  return 'Требует уточнения';
+  if (status === 'verified') return year === 2026 ? 'Current for 2026' : year ? `Verified · ${year}` : 'Verified · year not listed';
+  if (status === 'archive') return `Archive · ${year ?? '2025'}`;
+  return 'Needs review';
 }
 
 export function StatusBadge({ status, year }: { status: VerificationStatus; year: number | null }) {

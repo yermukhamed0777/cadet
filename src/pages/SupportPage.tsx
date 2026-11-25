@@ -22,8 +22,8 @@ export function SupportPage() {
   const [status, setStatus] = useState<string | null>(null);
   const [sent, setSent] = useState(() => (session ? supportService.list(session.user.id) : []));
 
-  const errS = touched && subject.trim().length < 3 ? 'Минимум 3 символа' : null;
-  const errM = touched && message.trim().length < 10 ? 'Минимум 10 символов' : null;
+  const errS = touched && subject.trim().length < 3 ? 'At least 3 characters' : null;
+  const errM = touched && message.trim().length < 10 ? 'At least 10 characters' : null;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,8 +32,8 @@ export function SupportPage() {
     setBusy(true);
     try {
       const m = await supportService.send(session.user.id, subject.trim(), message.trim());
-      setStatus(m.delivery === 'local_demo' ? 'В demo-режиме сообщение сохранено локально.' : 'Сообщение отправлено.');
-      toast(m.delivery === 'local_demo' ? 'Сохранено локально (demo)' : 'Отправлено');
+      setStatus(m.delivery === 'local_demo' ? 'In Demo mode, your message is saved locally.' : 'Message sent.');
+      toast(m.delivery === 'local_demo' ? 'Saved locally (Demo mode)' : 'Sent');
       setSubject('');
       setMessage('');
       setTouched(false);
@@ -47,8 +47,8 @@ export function SupportPage() {
 
   return (
     <>
-      <PageHeader title="Поддержка" back />
-      <SectionTitle>Частые вопросы</SectionTitle>
+      <PageHeader title="Support" back />
+      <SectionTitle>FAQ</SectionTitle>
       <div className="flex flex-col gap-2">
         {faq.map((f) => (
           <Accordion key={f.id} header={<span className="font-medium text-ink">{f.question}</span>}>
@@ -62,7 +62,7 @@ export function SupportPage() {
         ))}
       </div>
 
-      <SectionTitle>Официальные контакты</SectionTitle>
+      <SectionTitle>Official contacts</SectionTitle>
       <div className="flex flex-col gap-2">
         {academyService.list().map((a) => (
           <Accordion key={a.id} header={<span className="font-medium text-ink">{a.shortTitle}</span>}>
@@ -79,14 +79,14 @@ export function SupportPage() {
         ))}
       </div>
 
-      <SectionTitle>Задать вопрос</SectionTitle>
+      <SectionTitle>Ask a question</SectionTitle>
       <Card>
-        {isDemoMode() && <p className="mb-3 rounded-lg bg-amber-50 p-2.5 text-[13px] text-amber-900">Backend не подключён: сообщения сохраняются только на этом устройстве и никому не отправляются.</p>}
+        {isDemoMode() && <p className="mb-3 rounded-lg bg-amber-50 p-2.5 text-[13px] text-amber-900">No backend is connected: messages are saved only on this device and are not sent to anyone.</p>}
         <form onSubmit={submit} noValidate className="flex flex-col gap-3">
-          <Field id="subject" label="Тема" value={subject} onChange={(e) => setSubject(e.target.value)} error={errS} maxLength={120} />
-          <TextArea id="message" label="Сообщение" value={message} onChange={(e) => setMessage(e.target.value)} error={errM} maxLength={2000} />
+          <Field id="subject" label="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} error={errS} maxLength={120} />
+          <TextArea id="message" label="Message" value={message} onChange={(e) => setMessage(e.target.value)} error={errM} maxLength={2000} />
           <Button type="submit" full loading={busy}>
-            Отправить
+            Send
           </Button>
           {status && (
             <p role="status" className="rounded-lg bg-emerald-50 p-2.5 text-sm font-medium text-emerald-900">
@@ -97,14 +97,14 @@ export function SupportPage() {
       </Card>
       {sent.length > 0 && (
         <>
-          <SectionTitle>Ваши обращения</SectionTitle>
+          <SectionTitle>Your messages</SectionTitle>
           <ul className="flex flex-col gap-2">
             {sent.map((m) => (
               <li key={m.id} className="rounded-xl border border-line bg-white p-3 text-sm">
                 <p className="font-semibold">{m.subject}</p>
                 <p className="mt-0.5 line-clamp-2 text-ink/80">{m.message}</p>
                 <p className="mt-1 text-[12px] text-muted">
-                  {formatDate(m.createdAt)} · {m.delivery === 'local_demo' ? 'сохранено локально (demo)' : 'отправлено'}
+                  {formatDate(m.createdAt)} · {m.delivery === 'local_demo' ? 'saved locally (Demo mode)' : 'sent'}
                 </p>
               </li>
             ))}

@@ -20,7 +20,7 @@ export function documentStats(state: UserState) {
   return { ready, inProgress, total };
 }
 
-/** Упражнения пола пользователя, по которым внесён хотя бы один результат */
+/** Exercises for the user's gender with at least one logged result. */
 export function fitnessStats(state: UserState) {
   const gender = state.profile?.gender ?? 'male';
   const ids = Array.from(
@@ -31,8 +31,8 @@ export function fitnessStats(state: UserState) {
 }
 
 /**
- * Этапы «Моего пути». Готовность = выполненные этапы / все этапы.
- * Никаких фиксированных процентов — только фактическое состояние пользователя.
+ * "My Path" stages. Readiness is derived from actual user state —
+ * no hard-coded percentages and no admission prediction.
  */
 export function buildPath(state: UserState): PathStage[] {
   const vvk = vvkStats(state);
@@ -43,83 +43,83 @@ export function buildPath(state: UserState): PathStage[] {
   return [
     {
       id: 'account',
-      title: 'Аккаунт создан',
-      description: 'Регистрация и профиль абитуриента.',
+      title: 'Account created',
+      description: 'Register and complete your applicant profile.',
       done: Boolean(state.profile),
       link: '/profile',
-      linkLabel: 'Профиль',
+      linkLabel: 'Profile',
     },
     {
       id: 'academy',
-      title: 'Академия выбрана',
-      description: 'Выберите одно из четырёх учебных заведений МВД РК.',
+      title: 'Academy selected',
+      description: 'Choose a U.S. service academy or ROTC path.',
       done: Boolean(state.selectedAcademy),
       link: '/academies',
-      linkLabel: state.selectedAcademy ? 'Изменить' : 'Выбрать',
+      linkLabel: state.selectedAcademy ? 'Change' : 'Select',
     },
     {
       id: 'specialty',
-      title: 'Специальность выбрана',
-      description: 'Изучите программы академии и подтвердите выбор.',
+      title: 'Program selected',
+      description: 'Review the academy’s academic programs and confirm your choice.',
       done: Boolean(state.selectedSpecialty),
       link: `${academyLink}/specialties`,
-      linkLabel: state.selectedSpecialty ? 'Изменить' : 'Выбрать',
+      linkLabel: state.selectedSpecialty ? 'Change' : 'Select',
     },
     {
       id: 'requirements',
-      title: 'Требования просмотрены',
-      description: 'ВВК, документы, физическая подготовка и этапы конкурса.',
+      title: 'Eligibility reviewed',
+      description: 'Medical screening, documents, fitness test and selection steps.',
       done: state.myPathProgress.requirementsViewed,
       link: '/requirements',
-      linkLabel: 'Открыть',
+      linkLabel: 'Open',
     },
     {
       id: 'documents',
-      title: 'Документы',
-      description: 'Отметьте статус каждого документа. Этап завершён, когда все — «Готово».',
+      title: 'Documents',
+      description: 'Track each item. The stage completes when every item is ready.',
       done: docs.total > 0 && docs.ready === docs.total,
       partial: docs.total ? docs.ready / docs.total : 0,
-      partialLabel: `${docs.ready} из ${docs.total} готово`,
+      partialLabel: `${docs.ready} of ${docs.total} ready`,
       link: '/documents',
-      linkLabel: 'Чеклист',
+      linkLabel: 'Checklist',
     },
     {
       id: 'vvk',
-      title: 'ВВК',
-      description: 'Подготовка к военно-врачебной комиссии. Отметьте все пункты или отметьте ВВК как пройденную.',
+      title: 'Medical exam',
+      description: 'Prepare for the DoDMERB / entrance medical exam. Tick every item or mark the exam as passed.',
       done: Boolean(state.myPathProgress.manual.vvkPassed) || (vvk.total > 0 && vvk.done === vvk.total),
       partial: vvk.total ? vvk.done / vvk.total : 0,
-      partialLabel: `${vvk.done} из ${vvk.total} пунктов`,
+      partialLabel: `${vvk.done} of ${vvk.total} items`,
       link: '/vvk',
-      linkLabel: 'Чеклист',
+      linkLabel: 'Checklist',
       manual: 'vvkPassed',
     },
     {
       id: 'fitness',
-      title: 'Физическая подготовка',
-      description: 'Внесите свои результаты по всем упражнениям норматива.',
+      title: 'Fitness test',
+      description: 'Log a result for every exercise in the Candidate Fitness Assessment.',
       done: fit.total > 0 && fit.logged === fit.total,
       partial: fit.total ? fit.logged / fit.total : 0,
-      partialLabel: `${fit.logged} из ${fit.total} ${pluralRu(fit.total, ['упражнения', 'упражнений', 'упражнений'])}`,
+      partialLabel: `${fit.logged} of ${fit.total} ${pluralRu(fit.total, ['exercise', 'exercises'])}`,
       link: '/fitness',
-      linkLabel: 'Результаты',
+      linkLabel: 'Results',
     },
     {
       id: 'competition',
-      title: 'Конкурсный отбор',
-      description: 'Учитываются ЕНТ, льготы и другие конкурсные показатели. Отметьте, когда этап пройден.',
+      title: 'Selection board',
+      description: 'Nomination, board review and academic evaluation. Mark the stage when it is complete.',
       done: Boolean(state.myPathProgress.manual.competition),
       link: '/requirements',
-      linkLabel: 'Об этапе',
+      linkLabel: 'About',
       manual: 'competition',
     },
     {
       id: 'enrollment',
-      title: 'Зачисление',
-      description: 'Результаты — только в личном кабинете Qyzmet police. Отметьте после официального решения.',
+      title: 'Appointment',
+      description: 'Official appointment decisions come from the academy — mark this only after the official result.',
       done: Boolean(state.myPathProgress.manual.enrollment),
       link: '/news',
-      linkLabel: 'Новости',
+      linkLabel: 'Updates',
       manual: 'enrollment',
     },
   ];

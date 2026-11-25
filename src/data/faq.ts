@@ -3,46 +3,47 @@ import type { FaqItem } from '../types';
 export const faq: FaqItem[] = [
   {
     id: 'f-docs',
-    question: 'Какие документы нужны?',
+    question: 'Which documents do I need?',
     answer:
-      'Официальный актуальный перечень на 2026 год в открытых источниках не найден. В разделе «Документы» собраны подтверждённые позиции и архив 2025. Остальное уточняйте в приёмной комиссии.',
-    link: { to: '/documents', label: 'Открыть документы' },
+      'This tracker lists only items named on official academy pages. Unconfirmed items are marked "Needs review" — check the current checklist with the admissions office.',
+    link: { to: '/documents', label: 'Open documents' },
   },
   {
-    id: 'f-vvk',
-    question: 'Где проходит ВВК?',
+    id: 'f-medical',
+    question: 'Where is the medical exam?',
     answer:
-      'Подтверждённых адресов пунктов ВВК пока нет — поэтому мы их не показываем. В 2026 году результаты ВВК отражались в системе Qyzmet-Police.kz.',
-    link: { to: '/vvk/map', label: 'ВВК на карте' },
+      'DoDMERB handles medical qualification for the service academies. No verified exam-site addresses are published here, so the map stays empty rather than showing guesses.',
+    link: { to: '/vvk/map', label: 'Exam locations' },
   },
   {
-    id: 'f-spec',
-    question: 'Как выбрать специальность?',
-    answer: 'Откройте академию → «Специальности» → «Подробнее» и нажмите «Выбрать эту специальность». Выбор можно изменить позже.',
-    link: { to: '/academies', label: 'К академиям' },
+    id: 'f-program',
+    question: 'How do I choose a program?',
+    answer: 'Open an academy → Programs → View details, then select the program. You can change it later in your profile.',
+    link: { to: '/academies', label: 'Academies' },
   },
   {
-    id: 'f-change-academy',
-    question: 'Как изменить академию?',
-    answer: 'Профиль → «Изменить академию». Выбранная специальность при этом сбросится, если она относится к другой академии.',
-    link: { to: '/profile', label: 'Открыть профиль' },
-  },
-  {
-    id: 'f-change-spec',
-    question: 'Как изменить специальность?',
-    answer: 'Профиль → «Изменить специальность», либо выберите другую программу на странице академии.',
-    link: { to: '/profile', label: 'Открыть профиль' },
+    id: 'f-change-school',
+    question: 'How do I change schools?',
+    answer: 'Profile → Change academy. The selected program is cleared if it belongs to another academy.',
+    link: { to: '/profile', label: 'Open profile' },
   },
   {
     id: 'f-fitness',
-    question: 'Где смотреть нормативы?',
+    question: 'Where are the fitness standards?',
     answer:
-      'Раздел «Физическая подготовка». Там два набора: архив 2025 и таблица с сайта Алматинской академии без указания года. Подтверждённых нормативов 2026 не найдено.',
-    link: { to: '/fitness', label: 'Открыть нормативы' },
+      'Open the Fitness test screen. It shows CFA reference scores published by West Point, Annapolis and the Air Force Academy. Official pages publish maximum scores or averages, not passing thresholds.',
+    link: { to: '/fitness', label: 'Fitness test' },
+  },
+  {
+    id: 'f-prediction',
+    question: 'Does this predict whether I will be appointed?',
+    answer:
+      'No. Readiness here is the share of your own checklist steps completed. It is not an admission chance estimate and not an official decision.',
+    link: { to: '/my-path', label: 'My Path' },
   },
   {
     id: 'f-contacts',
-    question: 'Где найти официальные контакты?',
-    answer: 'На странице каждой академии и в разделе «Поддержка» — только контакты, опубликованные на официальных сайтах.',
+    question: 'Where do I find official contacts?',
+    answer: 'Every school page links to its official admissions site. Only official links are shown.',
   },
 ];

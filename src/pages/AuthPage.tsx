@@ -46,14 +46,14 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
     try {
       if (isRegister) {
         await register(email, password);
-        toast('Аккаунт создан');
+        toast('Account created');
         navigate('/profile/setup', { replace: true });
       } else {
         await login(email, password);
         navigate('/', { replace: true });
       }
     } catch (err) {
-      setFormError((err as Error).message || 'Не удалось выполнить запрос');
+      setFormError((err as Error).message || 'Request failed');
     } finally {
       setBusy(false);
     }
@@ -69,25 +69,25 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
 
   return (
     <AuthLayout>
-      <h2 className="text-xl font-semibold text-ink">{isRegister ? 'Регистрация' : 'Вход'}</h2>
+      <h2 className="text-xl font-semibold text-ink">{isRegister ? 'Sign up' : 'Sign in'}</h2>
       <p className="mt-1 text-sm text-muted">
-        {isRegister ? 'Создайте аккаунт абитуриента вузов МВД РК.' : 'Войдите, чтобы продолжить подготовку.'}
+        {isRegister ? 'Create an applicant account.' : 'Sign in to continue your application.'}
       </p>
 
       <div className="mt-5">
         <Button variant="secondary" full onClick={google} disabled={!googleReady} icon={<GoogleIcon />} aria-describedby="google-note">
-          Продолжить с Google
+          Continue with Google
         </Button>
         {!googleReady && (
           <p id="google-note" className="mt-2 text-[12.5px] leading-snug text-muted">
-            Вход через Google не подключён: для него нужен backend и Google Client ID (см. README). Кнопка станет активной после настройки.
+            Google sign-in is not connected yet: it requires a backend and a Google Client ID (see README). The button will be enabled once configured.
           </p>
         )}
       </div>
 
       <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-muted">
         <span className="h-px flex-1 bg-line" />
-        или
+        or
         <span className="h-px flex-1 bg-line" />
       </div>
 
@@ -108,20 +108,20 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
         <div className="relative">
           <Field
             id="password"
-            label="Пароль"
+            label="Password"
             type={show ? 'text' : 'password'}
             autoComplete={isRegister ? 'new-password' : 'current-password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={passErr}
-            hint={isRegister ? 'Минимум 8 символов, буквы и цифры' : undefined}
+            hint={isRegister ? 'At least 8 characters, including letters and numbers' : undefined}
             className="pr-12"
           />
           <button
             type="button"
             onClick={() => setShow((s) => !s)}
             className="absolute right-1 top-[30px] grid h-11 w-11 place-items-center text-muted hover:text-navy"
-            aria-label={show ? 'Скрыть пароль' : 'Показать пароль'}
+            aria-label={show ? 'Hide password' : 'Show password'}
           >
             {show ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
@@ -132,14 +132,14 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
           </p>
         )}
         <Button type="submit" full loading={busy}>
-          {isRegister ? 'Создать аккаунт' : 'Войти'}
+          {isRegister ? 'Create account' : 'Sign in'}
         </Button>
       </form>
 
       <p className="mt-6 text-center text-sm text-muted">
-        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '}
+        {isRegister ? 'Already have an account? ' : 'No account? '}
         <Link to={isRegister ? '/login' : '/register'} className="inline-block py-2 font-semibold text-navy underline-offset-2 hover:underline">
-          {isRegister ? 'Войти' : 'Зарегистрироваться'}
+          {isRegister ? 'Sign in' : 'Sign up'}
         </Link>
       </p>
     </AuthLayout>

@@ -6,9 +6,9 @@ import { documentStats } from '../utils/progress';
 import type { DocStatus } from '../types';
 
 const statuses: { id: DocStatus; label: string; cls: string }[] = [
-  { id: 'not_ready', label: 'Не готово', cls: 'peer-checked:bg-white peer-checked:text-ink peer-checked:border-navy/40' },
-  { id: 'in_progress', label: 'В процессе', cls: 'peer-checked:bg-amber-100 peer-checked:text-amber-900 peer-checked:border-amber-300' },
-  { id: 'ready', label: 'Готово', cls: 'peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600' },
+  { id: 'not_ready', label: 'Not started', cls: 'peer-checked:bg-white peer-checked:text-ink peer-checked:border-navy/40' },
+  { id: 'in_progress', label: 'In progress', cls: 'peer-checked:bg-amber-100 peer-checked:text-amber-900 peer-checked:border-amber-300' },
+  { id: 'ready', label: 'Ready', cls: 'peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600' },
 ];
 
 export function DocumentsPage() {
@@ -17,21 +17,21 @@ export function DocumentsPage() {
 
   return (
     <>
-      <PageHeader title="Документы" back />
+      <PageHeader title="Documents" back />
       <Card className="mb-3">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-semibold">Готовность документов</h2>
+          <h2 className="font-semibold">Document readiness</h2>
           <span className="text-sm font-semibold text-navy tabular-nums">
             {ready} / {total}
           </span>
         </div>
         <div className="mt-2">
-          <ProgressBar value={total ? ready / total : 0} label="Готовность документов" size="lg" />
+          <ProgressBar value={total ? ready / total : 0} label="Document readiness" size="lg" />
         </div>
-        <p className="mt-2 text-[12.5px] text-muted">В процессе: {inProgress}</p>
+        <p className="mt-2 text-[12.5px] text-muted">In progress: {inProgress}</p>
       </Card>
       <p className="mb-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-[13px] leading-snug text-amber-900">
-        Актуальный официальный перечень документов не найден. Количество копий и нотариальное заверение указаны только там, где они подтверждены. Остальное — «Требует уточнения по актуальным требованиям приёмной комиссии».
+        No current official document list was found. Copy counts and notarization are shown only where confirmed. Everything else is marked "Needs review against the admissions office's current requirements".
       </p>
 
       {documentCategories.map((cat) => {
@@ -54,7 +54,7 @@ export function DocumentsPage() {
                         />
                         <span className="min-w-0">
                           <span className="block font-medium leading-snug text-ink">{d.title}</span>
-                          <span className="block text-[12.5px] text-muted">Статус: {statuses.find((s) => s.id === st)!.label}</span>
+                          <span className="block text-[12.5px] text-muted">Status: {statuses.find((s) => s.id === st)!.label}</span>
                         </span>
                       </div>
                     }
@@ -62,16 +62,16 @@ export function DocumentsPage() {
                     <p className="text-[14px] leading-snug text-ink/85">{d.description}</p>
                     <dl className="mt-3 grid grid-cols-2 gap-2 text-[13px]">
                       <div className="rounded-lg bg-page p-2.5">
-                        <dt className="text-muted">Количество копий</dt>
-                        <dd className="font-semibold">{d.copies ?? 'Требует уточнения'}</dd>
+                        <dt className="text-muted">Copies required</dt>
+                        <dd className="font-semibold">{d.copies ?? 'Needs review'}</dd>
                       </div>
                       <div className="rounded-lg bg-page p-2.5">
-                        <dt className="text-muted">Нотариальное заверение</dt>
-                        <dd className="font-semibold">{d.notarized ?? 'Требует уточнения'}</dd>
+                        <dt className="text-muted">Notarization</dt>
+                        <dd className="font-semibold">{d.notarized ?? 'Needs review'}</dd>
                       </div>
                     </dl>
                     <fieldset className="mt-3">
-                      <legend className="mb-1.5 text-[13px] font-semibold">Статус</legend>
+                      <legend className="mb-1.5 text-[13px] font-semibold">Status</legend>
                       <div className="grid grid-cols-3 gap-1.5">
                         {statuses.map((s) => (
                           <label key={s.id} className="relative">

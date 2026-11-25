@@ -3,6 +3,6 @@ import { ToastContext } from '../context/ToastContext';
 
 export function useToast() {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error('useToast вне ToastProvider');
+  if (!ctx) throw new Error('useToast outside ToastProvider');
   return ctx.show;
 }
