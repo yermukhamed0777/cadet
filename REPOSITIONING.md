@@ -5,17 +5,16 @@
 > tag `v1-kz-mvd`. This document is the original analysis and mapping that the
 > implementation follows.
 
-Status: recovered project (single commit `61318e8`, 2026-11-23), cloned from
-`yermukhamed0777/bolashaq-kursant` into this folder. No live website is attached
-to the repo (`has_pages: false`, no homepage). The only deployed artifacts found
-are local one-file copies (`deploy-multi/bolashaq.html`, `kb.html`) of the same
-production bundle.
+Status: recovered project (single commit `61318e8`, 2026-11-23), cloned from the
+original Kazakhstan MVD repository into this folder. No live website was
+attached to the repo at that time (`has_pages: false`, no homepage). The only
+deployed artifacts found were local one-file copies of the same production
+bundle.
 
 ## 1. What was actually recovered
 
-A mobile-first PWA, **BOLASHAQ KURSANT — «Твой путь в академию»**, an applicant
-companion for the four MVD of Kazakhstan academies (Almaty, Karaganda,
-Kostanay, Aktobe).
+A mobile-first PWA (the predecessor of **CADET**), an applicant companion for
+the four MVD of Kazakhstan academies (Almaty, Karaganda, Kostanay, Aktobe).
 
 - Stack: React 18 + TypeScript + Vite 5 + Tailwind 3 + React Router 6 + Lucide + `vite-plugin-pwa`.
 - 22 screens, 4-tab mobile navigation, rating: Lighthouse accessibility 100 / best practices 100 / SEO 80.
@@ -70,7 +69,7 @@ competing with Methodos (discovery) and Scholion (exam prep): this product becom
 the *checklist/progress tracker that carries a candidate from decision to
 appointment*.
 
-**Name** (drop "Bolashaq Kursant" — unpronounceable outside KZ/RU and tied to one ministry):
+**Name** (replace the old Kazakhstan/Russian name — unpronounceable outside KZ/RU and tied to one ministry):
 - **CADET** — recommended; short, understood in both English and Chinese contexts, tagline *"Your path to commission."*
 - **Commission** — stronger US service-academy framing, longer.
 - **Oath** — memorable but ambiguous without a subtitle.
