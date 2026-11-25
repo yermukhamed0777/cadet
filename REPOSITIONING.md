@@ -1,9 +1,10 @@
 # Recovery assessment & repositioning proposal
 
 > **Implementation status:** the U.S. service-academy track (CADET) is
-> implemented on branch `reposition-us`. The Kazakhstan version is preserved at
-> tag `v1-kz-mvd`. This document is the original analysis and mapping that the
-> implementation follows.
+> implemented and merged to `main`, and the repository is public at
+> `yermukhamed0777/cadet` with a GitHub Pages deployment. The Kazakhstan version
+> is preserved at tag `v1-kz-mvd`. This document is the original analysis and
+> mapping that the implementation follows.
 
 Status: recovered project (single commit `61318e8`, 2026-11-23), cloned from the
 original Kazakhstan MVD repository into this folder. No live website was

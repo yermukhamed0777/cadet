@@ -43,6 +43,15 @@ npm run build:hash      # dist-hash/ with HashRouter, relative paths, no SW
 `dist/` is a static site. Configure an SPA fallback on the host (`/* /index.html 200`
 on Netlify, `rewrites` on Vercel, `try_files` on Nginx). PWA and Web Crypto need HTTPS.
 
+### Live demo
+
+**https://yermukhamed0777.github.io/cadet/**
+
+GitHub Pages uses the hash build (`/#/home`) because it has no SPA fallback.
+The trade-off: the service worker is disabled there, so offline caching and
+Web Crypto are unavailable on the Pages deployment. Run the standard build on
+an HTTPS host with SPA rewrites for the full PWA experience.
+
 ## Authentication
 
 ### Demo mode (default)
