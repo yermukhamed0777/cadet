@@ -51,8 +51,11 @@ GitHub Pages uses the hash build (`/#/home`) because it has no SPA fallback.
 The trade-off is that the service worker is disabled there, so **offline
 caching is not available** on that deployment. Because Pages is served over
 HTTPS, it *is* a secure context: Web Crypto and demo registration work there.
-Run the standard build on an HTTPS host with SPA rewrites for the full PWA
-experience.
+Observed in Chrome on 2026-11-26: `isSecureContext=true`, PBKDF2 succeeded, no
+service worker, no manifest, no HTTP errors, and `/#/login` loaded. The live site
+still serves the last published commit until a new push is authorised. Run the
+standard build on an HTTPS host with SPA rewrites for the full PWA experience;
+`npm run verify:pwa` checks both variants locally.
 
 ## Authentication
 
@@ -83,6 +86,15 @@ Google button → GET {API}/auth/google?redirect_uri={APP}/auth/callback
 → frontend: GET {API}/auth/me
 ```
 
+**This is a documented contract, not a working feature.** No production backend,
+Google OAuth client or cloud synchronisation has been deployed or verified end to
+end; in the shipped build Google sign-in stays disabled. The query-string token
+handoff above is a known credential-leakage risk (browser history, copied URLs,
+referrer headers and server logs). The callback scrubs the token from the
+address bar after reading it, but a secure implementation should instead use an
+authorisation code with PKCE and a backend code-for-session exchange, returning
+an HttpOnly session cookie. Do not treat the documented query token as secure.
+
 ## Backup and restore
 
 Demo data lives only in this browser. **Profile → Backup & restore** downloads
@@ -91,8 +103,12 @@ program selection, checklists, fitness results, notifications and comparison
 list. Restoring validates the file, lets you confirm, and then replaces the
 current state. Signing out does not delete local data; clearing browser data or
 switching devices does — keep the backup somewhere private, since it contains
-your name and date of birth. In production mode the backend owns state instead
-(`GET/PUT /me/state`) and the local backup is not used.
+your name and date of birth. **Profile → Delete demo account and local data**
+removes the account record, profile, checklists, results, support messages and
+session after typing `DELETE`; this cannot be undone. In production mode the
+backend owns state instead (`GET/PUT /me/state`), the local backup is not used,
+and account deletion must be provided by that backend — the client refuses to
+pretend it can delete a remote account.
 
 ## Verify
 
@@ -105,6 +121,7 @@ npm test              # Vitest: unit + data-layer suites
 npm run build         # TypeScript check + root-path PWA build → dist/
 npm run build:hash    # subpath/HashRouter build → dist-hash/
 npm run verify:build  # asserts artifacts and relative vs absolute paths
+npm run verify:pwa    # both builds: SW, offline, Web Crypto, routes, assets
 npm run test:e2e      # Playwright (system Chrome) against dist/
 npm run verify        # all of the above in order
 ```
@@ -112,6 +129,18 @@ npm run verify        # all of the above in order
 `docs/plan/progress.md` records the exact commands and results of the last
 local run. `npm run capture:walkthrough` regenerates the deterministic
 screenshots in `docs/walkthrough/`; see `docs/walkthrough/README.md`.
+
+## Accessibility
+
+A skip link is the first focusable element on every screen and targets
+`#main-content`. The signed-in shell announces the current view in a polite
+live region and updates the document title. Form errors set `aria-invalid` and
+are tied to their fields. `npm run test:e2e` checks keyboard focus, labelled
+controls, announcements and 375 px overflow across the major workspaces. A
+manual screen-reader pass is still required before the pilot.
+
+Source provenance and the 2026-11-26 official-source audit are in
+[`docs/plan/source-audit.md`](docs/plan/source-audit.md).
 
 ## Backend contract
 

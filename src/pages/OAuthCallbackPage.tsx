@@ -35,7 +35,7 @@ export function OAuthCallbackPage() {
 
   if (error)
     return (
-      <div className="mx-auto max-w-md p-6">
+      <div id="main-content" tabIndex={-1} className="mx-auto max-w-md p-6">
         <ErrorState text={error} />
         <Link to="/login" className="mt-4 block text-center font-semibold text-navy">
           Back to sign in
