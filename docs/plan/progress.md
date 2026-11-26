@@ -74,3 +74,43 @@ Counts above are measurements, not targets. Proposed pilot targets live in
 `docs/pilot-handoff.md` and are explicitly labelled as unmeasured. No usage,
 user, retention or revenue claim exists in this repository.
 
+## 2026-11-26 — admissions-data and PWA reliability sprint (CADET-015…019)
+
+Official-source reads (all read-only; exact outcomes are in
+[`source-audit.md`](source-audit.md)):
+
+- `webfetch https://www.usna.edu/Admissions/Apply/index.php` → HTTP 200;
+  citizenship/age/marital/SSN eligibility, nomination sources, SAT/ACT/CLT,
+  Class of 2031 deadlines and six CFA events confirmed.
+- `webfetch https://www.usafa.edu/admissions/commitment/requirements/` → HTTP
+  200; statutory eligibility, course guidance and the published CFA averages
+  confirmed against `src/data/fitness.ts`.
+- `webfetch https://uscga.edu/admissions/admission-requirements/` and
+  `https://uscga.edu/admissions/apply/` → HTTP 200; no nomination requirement,
+  eligibility, July 15/October 15/January 15/April 1/May 1 dates and PFE-only
+  rule confirmed.
+- `webfetch https://www.dha.mil/dodmerb` → HTTP 200; DMACS 2.0, DODMETS and
+  commissioning-program waiver authority confirmed.
+- `webfetch https://www.whitehouse.gov/service-academy-nomination/` → HTTP 200;
+  Vice Presidential nomination excludes USCGA and USMMA.
+- `webfetch` and `curl.exe -A <browser>` for the three West Point admissions
+  pages → HTTP 403; archive endpoint → HTTP 429. Not re-verified; notes added.
+- `webfetch https://www.usmma.edu/admissions` and `/8-steps-admission` → HTTP
+  403. Not re-verified; existing notes retained.
+
+Local verification after the fixes:
+
+| Command | Exact result |
+|---|---|
+| `npm.cmd run test:unit` | `Test Files 7 passed (7)`, `Tests 40 passed (40)`. |
+| `npm.cmd run test:data` | `Test Files 1 passed (1)`, `Tests 10 passed (10)` — includes demo-account deletion and refusal of remote deletion. |
+| `npm.cmd run test:e2e` | `9 passed (1.0m)` — skip link/keyboard, labelled controls and 375 px overflow, backup round-trip, account deletion, offline PWA, onboarding, persistence, two walkthrough captures. |
+| `npm.cmd run verify:pwa` | root PWA: 0 HTTP errors, PBKDF2 16 bytes, SW `activated`, `/home` → `/login`, offline reload works, manifest present, CDP installability errors `[]`, `installable-by-configuration true`. Hash build: 0 HTTP errors, PBKDF2 16 bytes, no SW, `/#/home` → `/#/login`, offline unavailable (expected), no manifest, `installable-by-configuration false`. `All PWA deployment checks passed.` |
+| live Pages browser probe (`https://yermukhamed0777.github.io/cadet/`) | `{"secureContext":true,"cryptoOk":true,"serviceWorker":false,"manifest":false,"title":"CADET — Your path to commission","url":"https://yermukhamed0777.github.io/cadet/#/login"}`; `HTTP_ERRORS []`. |
+| `npm.cmd run typecheck` / `npm.cmd run lint` | no output; exit `0`. |
+| `npm.cmd run verify` (final) | exit 0; lint, typecheck, `50 passed (50)` unit/data tests, both builds (`✓ built in 2.60s` / `2.49s`), all `verify:build` PASS lines, all `verify:pwa` PASS lines, `9 passed (1.0m)` e2e, Prettier clean. |
+
+The live Pages site still serves the previously published commit; this sprint's
+local commits are not pushed. No account, email, participant, payment or public
+commitment was created.
+

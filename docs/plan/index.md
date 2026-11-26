@@ -13,6 +13,7 @@ reviewer who has never seen the repository.
 | [backlog.md](backlog.md) | Stable IDs, file:line references, "Done when" criteria | Append new IDs; only change status text, never renumber |
 | [decisions.md](decisions.md) | Append-only decision log with alternatives and why | Append only |
 | [progress.md](progress.md) | Append-only command/outcome log with exact commands and results | Append only |
+| [source-audit.md](source-audit.md) | Official-source audit with per-URL outcomes and re-check scope | Append only |
 
 ## Update convention
 

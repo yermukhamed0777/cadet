@@ -47,3 +47,24 @@ Do not edit earlier entries; append a superseding entry instead.
   it remains on disk. Affects: CADET-002.
 - **D-010 · 2026-11-26 · Do not add a project LICENSE (see D-002) and do not
   push.** Both are explicit human confirmations. Affects: CADET-011.
+- **D-011 · 2026-11-26 · Record a second, narrower re-check date
+  (`AUDITED_AT = 2026-11-26`) instead of stamping every fact as re-checked.**
+  Alternatives: move `CHECKED_AT` globally (rejected: would claim all sources
+  were re-fetched), add no dates (rejected: hides the new evidence). Only facts
+  whose official page answered carry `AUDITED_AT`; West Point and Kings Point
+  keep the old date and an explicit manual-recheck note. Affects: CADET-015.
+- **D-012 · 2026-11-26 · Add local demo-account deletion but refuse remote
+  deletion in the client.** Alternatives: document only (rejected: users cannot
+  remove their own demo data), call a fake backend (rejected: false claim).
+  Typed confirmation and a final backup reminder limit accidental loss.
+  Affects: CADET-016.
+- **D-013 · 2026-11-26 · Keep the OAuth handoff as documentation only and name
+  its risk.** Alternatives: implement a backend to remove the limitation
+  (rejected: out of scope and requires accounts/money), silently claim it works
+  (rejected: false). A future production implementation should use PKCE and a
+  backend-issued HttpOnly session cookie, never a URL bearer token. Affects:
+  CADET-017.
+- **D-014 · 2026-11-26 · Add minimal keyboard/screen-reader affordances rather
+  than a component-library redesign.** Skip link, focusable main target, polite
+  route announcer and document title updates cover the observed gaps without
+  changing visual design. Affects: CADET-019.

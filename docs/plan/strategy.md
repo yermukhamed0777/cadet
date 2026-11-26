@@ -37,8 +37,13 @@ recommendations.
 **Measured** (commands and exact outputs are in `progress.md`; nothing is
 entered here until a command result exists):
 
-- _Pending first verification run._ No usage, user, retention or revenue
-  numbers exist in this repository. None will be invented.
+- Local verification: `50 passed (50)` unit/data tests and `9 passed` browser
+  e2e in the final `npm run verify`; root JS bundle `311.98 kB` raw /
+  `92.71 kB` gzip; hash JS `312.35 kB` / `92.84 kB` gzip (exact lines in
+  `progress.md`). Both build variants passed `verify:pwa`; the HTTPS Pages
+  origin was observed with `secureContext=true` and PBKDF2 working.
+- No usage, user, retention or revenue number has been measured. None will be
+  invented.
 
 **Claimed / inherited, not re-measured here:**
 
