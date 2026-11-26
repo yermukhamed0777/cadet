@@ -21,6 +21,7 @@ interface AppStateValue {
   error: string | null;
   saveError: string | null;
   reload: () => void;
+  replaceState: (s: UserState) => void;
   saveProfile: (p: Profile) => void;
   selectAcademy: (id: AcademyId) => void;
   selectSpecialty: (id: string | null) => void;
@@ -101,6 +102,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       error,
       saveError,
       reload: () => setNonce((n) => n + 1),
+      replaceState: (s) => update(() => s),
       saveProfile: (p) => update((s) => ({ ...s, profile: p })),
       selectAcademy: (id) =>
         update((s) => {

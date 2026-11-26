@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Pencil, Landmark, GraduationCap, Bell, LogOut, ChevronRight, LifeBuoy, Newspaper } from 'lucide-react';
+import { Pencil, Landmark, GraduationCap, Bell, LogOut, ChevronRight, LifeBuoy, Newspaper, Database } from 'lucide-react';
 import { PageHeader } from '../components/PageHeader';
 import { Button, Card, Modal, SectionTitle } from '../components/ui';
 import { DemoBanner } from '../components/DemoBanner';
@@ -36,6 +36,7 @@ export function ProfilePage() {
     { to: '/academies', label: 'Change academy', Icon: Landmark },
     { to: academy ? `/academies/${academy.id}/specialties` : '/academies', label: 'Change program', Icon: GraduationCap },
     { to: '/profile/notifications', label: 'Notification settings', Icon: Bell },
+    { to: '/profile/data', label: 'Backup & restore', Icon: Database },
     { to: '/news', label: 'News', Icon: Newspaper },
     { to: '/support', label: 'Support', Icon: LifeBuoy },
   ];

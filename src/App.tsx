@@ -25,6 +25,7 @@ import { ComparePage } from './pages/ComparePage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ProfileEditPage } from './pages/ProfileEditPage';
 import { NotificationSettingsPage } from './pages/NotificationSettingsPage';
+import { DataPage } from './pages/DataPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 const Router = __ROUTER_MODE__ === 'hash' ? HashRouter : BrowserRouter;
@@ -66,6 +67,7 @@ export default function App() {
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/profile/edit" element={<ProfileEditPage />} />
                     <Route path="/profile/notifications" element={<NotificationSettingsPage />} />
+                <Route path="/profile/data" element={<DataPage />} />
                   </Route>
                 </Route>
               </Route>
