@@ -92,7 +92,7 @@ export const documents: DocumentItem[] = [
     description: 'DoDMERB determines medical qualification for the academies; the process is run through DMACS and DODMETS.',
     copies: null,
     notarized: null,
-    ...SRC.dodmerb(),
+    ...SRC.dodmerbAudited(),
   },
   {
     id: 'doc-photo',

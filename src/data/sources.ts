@@ -1,7 +1,10 @@
 import type { SourceRef } from '../types';
 
-/** Date of the last manual check against official sources */
+/** Date of the last full manual check against official sources */
 export const CHECKED_AT = '2026-11-25';
+
+/** Date of the targeted re-check recorded in docs/plan/source-audit.md */
+export const AUDITED_AT = '2026-11-26';
 
 export const URLS = {
   westpointHome: 'https://www.westpoint.edu/admissions',
@@ -36,6 +39,19 @@ const ref = (
   note?: string,
 ): SourceRef => ({ source, sourceUrl, checkedAt: CHECKED_AT, applicableYear, status, note });
 
+/** A fact re-checked directly on 2026-11-26; the note records that scope. */
+const audited = (
+  source: string,
+  sourceUrl: string,
+  status: SourceRef['status'],
+  applicableYear: number | null,
+  note?: string,
+): SourceRef => ({
+  ...ref(source, sourceUrl, status, applicableYear, note),
+  checkedAt: AUDITED_AT,
+  note: note ? `${note} · Re-checked ${AUDITED_AT}` : `Re-checked ${AUDITED_AT}`,
+});
+
 export const SRC = {
   westpoint: (note?: string) =>
     ref('U.S. Military Academy (West Point) — Admissions', URLS.westpointHome, 'verified', null, note),
@@ -51,5 +67,13 @@ export const SRC = {
     ref('DoDMERB — Department of Defense Medical Examination Review Board', URLS.dodmerb, 'verified', null, note),
   whiteHouse: (note?: string) =>
     ref('The White House — Service Academy Nomination', URLS.whiteHouseNomination, 'verified', null, note),
+  annapolisAudited: (note?: string) =>
+    audited('U.S. Naval Academy (Annapolis) — Apply', URLS.annapolisApply, 'verified', 2027, note),
+  coloradoAudited: (note?: string) =>
+    audited('U.S. Air Force Academy — Admissions', URLS.coloradoRequirements, 'verified', null, note),
+  newLondonAudited: (note?: string) =>
+    audited('U.S. Coast Guard Academy (New London) — Admissions', URLS.newLondonRequirements, 'verified', null, note),
+  dodmerbAudited: (note?: string) =>
+    audited('DoDMERB — Department of Defense Medical Examination Review Board', URLS.dodmerb, 'verified', null, note),
   none: (note = 'No official source confirmed') => ref('No confirmed source', '', 'needs_review', null, note),
 };

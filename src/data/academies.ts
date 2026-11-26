@@ -60,8 +60,8 @@ export const academies: Academy[] = [
       },
     ),
     studyConditions: fact(
-      'U.S. citizen by July 1 of the entry year; at least 17 and not past the 23rd birthday on July 1; unmarried with no dependents.',
-      { ...SRC.annapolis('Applies to the Class of 2031 cycle'), sourceUrl: URLS.annapolisApply },
+      'U.S. citizen by 1 July of the entry year; at least 17 and not past the 23rd birthday on 1 July; unmarried, not pregnant, with no dependents and a valid Social Security number.',
+      SRC.annapolisAudited('Applies to the Class of 2031 cycle'),
     ),
     dormitory: unknown(),
     meals: unknown(),

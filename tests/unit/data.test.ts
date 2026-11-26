@@ -6,7 +6,7 @@ import { vvkChecklist } from '../../src/data/vvk';
 import { fitnessNormSets } from '../../src/data/fitness';
 import { admissionFacts } from '../../src/data/requirements';
 import { news } from '../../src/data/news';
-import { CHECKED_AT, URLS } from '../../src/data/sources';
+import { AUDITED_AT, CHECKED_AT, URLS } from '../../src/data/sources';
 import type { SourceRef } from '../../src/types';
 
 const refs: { label: string; ref: SourceRef }[] = [
@@ -28,7 +28,18 @@ describe('catalog integrity', () => {
   it('gives every fact a status, a check date and a source URL when verified', () => {
     for (const { label, ref } of refs) {
       expect(['verified', 'archive', 'needs_review'], label).toContain(ref.status);
-      expect(ref.checkedAt, label).toBe(CHECKED_AT);
+      expect([CHECKED_AT, AUDITED_AT], label).toContain(ref.checkedAt);
+      if (ref.checkedAt === AUDITED_AT)
+        expect(
+          [
+            URLS.annapolisApply,
+            URLS.coloradoRequirements,
+            URLS.newLondonRequirements,
+            URLS.newLondonApply,
+            URLS.dodmerb,
+          ],
+          label,
+        ).toContain(ref.sourceUrl);
       if (ref.status === 'verified') expect(ref.sourceUrl, label).toMatch(/^https:\/\//);
     }
   });

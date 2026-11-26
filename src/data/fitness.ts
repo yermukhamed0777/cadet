@@ -52,7 +52,7 @@ export const fitnessNormSets: FitnessNormSet[] = [
   {
     id: 'cfa-averages',
     title: 'CFA published averages — Air Force',
-    ...SRC.colorado('Published averages, not minimum passing standards; page shows no entry cycle'),
+    ...SRC.coloradoAudited('Published averages, not minimum passing standards; page shows no entry cycle'),
     sourceUrl: URLS.coloradoRequirements,
     exercises: [
       refExercise('avg-basketball-m', 'male', 'Basketball throw', 'ft', false, 69),

@@ -19,6 +19,15 @@ verification runs are in [`docs/plan/progress.md`](docs/plan/progress.md).
 - Deterministic walkthrough capture (`npm run capture:walkthrough`) and a pilot
   handoff document.
 - CI `verify` job that gates the GitHub Pages build and deployment.
+- `verify:pwa`, which independently checks the root PWA and Pages hash builds
+  for assets, Web Crypto, service-worker behaviour, offline navigation, direct
+  routes and installability configuration.
+- Demo account deletion with typed confirmation, removing local account,
+  profile, checklists, results, support messages and session data.
+- Skip link, focusable main landmark target, polite route announcer and
+  per-view document titles.
+- Official-source audit record with a narrower 2026-11-26 re-check date for
+  facts whose pages could actually be fetched.
 
 ### Fixed
 
@@ -29,6 +38,12 @@ verification runs are in [`docs/plan/progress.md`](docs/plan/progress.md).
   build).
 - The OAuth callback token is scrubbed from the address bar after use.
 - The historical check date in `REPOSITIONING.md` is labelled as such.
+- USNA eligibility now includes the official no-pregnancy and valid-SSN criteria;
+  directly re-checked facts carry an explicit audit date while blocked sources
+  keep their previous date and a manual-recheck note.
+- README now states that Google OAuth and cloud sync are an unverified backend
+  contract, names the query-token leakage risk, and recommends PKCE with an
+  HttpOnly session for any future implementation.
 
 ### Changed
 

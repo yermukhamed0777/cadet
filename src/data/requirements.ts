@@ -26,10 +26,10 @@ export const admissionFacts: RequirementFact[] = [
   ),
   entry(
     'req-age-annapolis',
-    'Age rules — Naval Academy',
-    'USNA requires citizenship by July 1 of the entry year, an age of at least 17 and not past the 23rd birthday on July 1, unmarried status and no dependents.',
-    SRC.annapolis(),
-    { sourceUrl: URLS.annapolisApply, applicableYear: 2027, note: 'Published for the Class of 2031 cycle' },
+    'Eligibility — Naval Academy',
+    'USNA requires citizenship by 1 July of the entry year, an age of at least 17 and not past the 23rd birthday on 1 July, unmarried status, not pregnant, no dependents and a valid Social Security number.',
+    SRC.annapolisAudited('Published for the Class of 2031 cycle'),
+    { sourceUrl: URLS.annapolisApply, applicableYear: 2027 },
   ),
   entry(
     'req-age-kingspoint',
@@ -49,7 +49,7 @@ export const admissionFacts: RequirementFact[] = [
     'req-nomination-exception',
     'Coast Guard: no nomination',
     'USCGA does not require a congressional nomination, unlike the other federal service academies.',
-    SRC.newLondon(),
+    SRC.newLondonAudited(),
   ),
   entry(
     'req-nomination-deadlines',
@@ -62,8 +62,8 @@ export const admissionFacts: RequirementFact[] = [
     'req-tests',
     'Admission tests',
     'USNA lists SAT and ACT results in its application requirements; from the 2027 academic year (Class of 2031) it also accepts the Classic Learning Test.',
-    SRC.annapolis(),
-    { sourceUrl: URLS.annapolisHome, applicableYear: 2027 },
+    SRC.annapolisAudited('SAT, ACT and CLT are all listed for the Class of 2031 cycle'),
+    { sourceUrl: URLS.annapolisApply, applicableYear: 2027 },
   ),
   entry(
     'req-cfa',
@@ -76,20 +76,20 @@ export const admissionFacts: RequirementFact[] = [
     'req-medical',
     'DoDMERB medical qualification',
     'DoDMERB determines medical qualification for the service academies, ROTC and USUHS. The commissioning program — not DoDMERB — decides on waivers.',
-    SRC.dodmerb(),
+    SRC.dodmerbAudited(),
   ),
   entry(
     'req-apply-annapolis',
     'Application deadline — Naval Academy',
     'For the Class of 2031, applications close on December 31 and must be complete by January 31, 2027. Admission is rolling and most candidates are notified by April 15.',
-    SRC.annapolis(),
+    SRC.annapolisAudited('Applications close 31 December; complete by 31 January 2027'),
     { sourceUrl: URLS.annapolisApply, applicableYear: 2027 },
   ),
   entry(
     'req-apply-newlondon',
     'Application deadlines — Coast Guard',
     'For the Class of 2031, the portal opens July 15; Early Action closes October 15, regular application closes January 15, decisions arrive by April 1 and acceptance is due May 1. The Physical Fitness Exam is required; the CFA cannot replace it.',
-    SRC.newLondon('Deadlines published for the Class of 2031 cycle'),
+    SRC.newLondonAudited('Deadlines published for the Class of 2031 cycle'),
     { sourceUrl: URLS.newLondonApply, applicableYear: 2027 },
   ),
   entry(
@@ -109,7 +109,7 @@ export const admissionFacts: RequirementFact[] = [
     'req-selection',
     'How West Point evaluates candidates',
     'USMA publishes a candidate score weighting of 55% academics, 30% leadership and character, and 15% physical fitness.',
-    SRC.westpoint(),
+    SRC.westpoint('Official page blocks automated fetching; re-check this weighting manually before relying on it'),
     { sourceUrl: URLS.westpointSteps },
   ),
 ];

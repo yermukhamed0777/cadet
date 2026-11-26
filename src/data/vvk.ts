@@ -2,7 +2,7 @@ import type { ChecklistItem, VvkLocation } from '../types';
 import { SRC } from './sources';
 
 const D = (note?: string) =>
-  SRC.dodmerb(note ?? 'Official DoDMERB page; confirm current procedures with your commissioning program');
+  SRC.dodmerbAudited(note ?? 'Official DoDMERB page; confirm current procedures with your commissioning program');
 
 export const VVK_VERSION_TITLE = 'Medical screening — DoDMERB process';
 
