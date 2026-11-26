@@ -3,6 +3,7 @@ import { Accordion, Card, ProgressBar, SectionTitle, SourceLink } from '../compo
 import { documentCategories, documents } from '../data/documents';
 import { useAppState } from '../hooks/useAppState';
 import { documentStats } from '../utils/progress';
+import { emit } from '../utils/events';
 import type { DocStatus } from '../types';
 
 const statuses: { id: DocStatus; label: string; cls: string }[] = [
@@ -80,7 +81,10 @@ export function DocumentsPage() {
                               name={`st-${d.id}`}
                               className="peer sr-only"
                               checked={st === s.id}
-                              onChange={() => setDocStatus(d.id, s.id)}
+                              onChange={() => {
+                                setDocStatus(d.id, s.id);
+                                emit('checklist_item_toggled');
+                              }}
                             />
                             <span
                               className={`flex min-h-[44px] cursor-pointer items-center justify-center rounded-lg border border-line bg-page px-1 text-center text-[12.5px] font-semibold text-muted transition active:scale-95 peer-focus-visible:ring-2 peer-focus-visible:ring-gold ${s.cls}`}

@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { BottomNav } from '../components/BottomNav';
 import { useAppState } from '../hooks/useAppState';
+import { emit } from '../utils/events';
 
 export function AppLayout() {
   const { pathname } = useLocation();
@@ -9,9 +10,15 @@ export function AppLayout() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  useEffect(() => {
+    emit('app_opened');
+  }, []);
   return (
     <div className="min-h-screen bg-page">
-      <main key={pathname} className="mx-auto max-w-2xl animate-fadeUp px-4 pb-[calc(96px+env(safe-area-inset-bottom,0px))]">
+      <main
+        key={pathname}
+        className="mx-auto max-w-2xl animate-fadeUp px-4 pb-[calc(96px+env(safe-area-inset-bottom,0px))] lg:max-w-4xl"
+      >
         {saveError && (
           <div role="alert" className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
             Changes not saved: {saveError}

@@ -9,7 +9,12 @@ export const gradeLabels: Record<FitnessGrade, string> = {
 
 /** Compare a result with the reference value. This is not a medical assessment. */
 export function gradeResult(ex: FitnessExercise, value: number): FitnessGrade {
-  if (ex.referenceOnly) return value >= ex.excellent ? 'excellent' : 'below';
+  if (ex.referenceOnly) {
+    // A single published figure is a reference, not a tier cutoff. Respect the
+    // event direction: a faster run/shuttle is better, more reps/feet is better.
+    const atOrBetter = ex.lowerIsBetter ? value <= ex.excellent : value >= ex.excellent;
+    return atOrBetter ? 'excellent' : 'below';
+  }
   const better = (a: number, b: number) => (ex.lowerIsBetter ? a <= b : a >= b);
   if (better(value, ex.excellent)) return 'excellent';
   if (better(value, ex.good)) return 'good';
@@ -48,7 +53,10 @@ export function parseInput(ex: FitnessExercise, raw: string): number | null {
 
 /** Progress toward the reference value for the on-screen scale, 0..1. */
 export function progressToExcellent(ex: FitnessExercise, v: number): number {
-  if (ex.referenceOnly) return Math.max(0, Math.min(1, v / ex.excellent));
+  if (ex.referenceOnly) {
+    const ratio = ex.lowerIsBetter ? ex.excellent / v : v / ex.excellent;
+    return Math.max(0, Math.min(1, ratio));
+  }
   const start = ex.lowerIsBetter ? ex.satisfactory * 1.15 : ex.satisfactory * 0.5;
   const span = ex.excellent - start;
   if (span <= 0) return 0;

@@ -4,6 +4,7 @@ import { PageHeader } from '../components/PageHeader';
 import { Card, ProgressBar } from '../components/ui';
 import { useAppState, usePath } from '../hooks/useAppState';
 import { useToast } from '../hooks/useToast';
+import { emit } from '../utils/events';
 
 export function MyPathPage() {
   const { stages, percent, done, total } = usePath();
@@ -70,6 +71,7 @@ export function MyPathPage() {
                         checked={manualOn}
                         onChange={(e) => {
                           setManualStage(s.manual!, e.target.checked);
+                          if (e.target.checked) emit('path_stage_completed');
                           toast(e.target.checked ? 'Step checked' : 'Check removed', 'info');
                         }}
                       />

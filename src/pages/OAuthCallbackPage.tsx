@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../hooks/useAuth';
 import { ErrorState, LoadingState } from '../components/ui';
+import { callbackPath } from '../utils/oauth';
 
 /** Return from the backend after Google OAuth: /auth/callback?token=... */
 export function OAuthCallbackPage() {
@@ -14,6 +15,11 @@ export function OAuthCallbackPage() {
   useEffect(() => {
     const token = params.get('token');
     const err = params.get('error');
+    // Consume the token and scrub it from the address bar. Preserve the
+    // router's own history state object while changing only the URL.
+    if (token || err) {
+      window.history.replaceState(window.history.state, '', callbackPath(window.location.href));
+    }
     if (err || !token) {
       setError(err ? `Google: ${err}` : 'No authorization token received.');
       return;
