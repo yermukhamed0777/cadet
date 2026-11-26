@@ -12,11 +12,14 @@ import { formatDate } from '../utils/format';
 
 export function ProfilePage() {
   const { state } = useAppState();
-  const { session, logout } = useAuth();
+  const { session, logout, deleteAccount } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletePhrase, setDeletePhrase] = useState('');
+  const [deleteBusy, setDeleteBusy] = useState(false);
   const p = state.profile!;
   const academy = academyService.get(state.selectedAcademy ?? undefined);
   const spec = academyService.specialty(state.selectedSpecialty);
@@ -83,6 +86,20 @@ export function ProfilePage() {
         Sign out
       </Button>
 
+      {session?.isDemo && (
+        <Button
+          variant="ghost"
+          full
+          className="mt-2 text-red-700"
+          onClick={() => {
+            setDeletePhrase('');
+            setConfirmDelete(true);
+          }}
+        >
+          Delete demo account and local data
+        </Button>
+      )}
+
       <Modal
         open={confirm}
         onClose={() => setConfirm(false)}
@@ -111,6 +128,55 @@ export function ProfilePage() {
         }
       >
         <p className="text-muted">{session?.isDemo ? 'Demo account data stays on this device — you can sign in again.' : 'You can sign in again at any time.'}</p>
+      </Modal>
+
+      <Modal
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title="Delete demo account?"
+        footer={
+          <>
+            <Button
+              variant="danger"
+              full
+              loading={deleteBusy}
+              disabled={deletePhrase !== 'DELETE'}
+              onClick={async () => {
+                setDeleteBusy(true);
+                try {
+                  await deleteAccount();
+                  setConfirmDelete(false);
+                  toast('Demo account and local data deleted', 'info');
+                  navigate('/login', { replace: true });
+                } catch (err) {
+                  toast((err as Error).message, 'error');
+                } finally {
+                  setDeleteBusy(false);
+                }
+              }}
+            >
+              Delete permanently
+            </Button>
+            <Button variant="secondary" full onClick={() => setConfirmDelete(false)} data-autofocus>
+              Cancel
+            </Button>
+          </>
+        }
+      >
+        <p>
+          This removes your demo account, profile, checklists, results, support messages and notification settings from
+          this browser. It cannot be undone. Export a backup first if you want to keep a copy.
+        </p>
+        <label className="mt-3 block text-sm font-semibold" htmlFor="delete-confirm">
+          Type DELETE to confirm
+        </label>
+        <input
+          id="delete-confirm"
+          value={deletePhrase}
+          onChange={(e) => setDeletePhrase(e.target.value)}
+          className="mt-1 min-h-[44px] w-full rounded-lg border border-line px-3"
+          autoComplete="off"
+        />
       </Modal>
     </>
   );

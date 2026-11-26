@@ -77,6 +77,41 @@ describe('demo authentication', () => {
     await auth.logout();
     expect(auth.getSession()).toBeNull();
   });
+
+  it('refuses to delete a production account from the browser', async () => {
+    storage.set('session', {
+      user: { id: 'remote', email: 'user@example.com', provider: 'backend', createdAt: '' },
+      token: 'fake',
+      isDemo: false,
+    });
+    vi.stubEnv('VITE_AUTH_MODE', 'production');
+    vi.stubEnv('VITE_API_URL', 'https://api.example.com');
+    vi.resetModules();
+    ({ authService: auth } = await import('../../src/services/authService'));
+    await expect(auth.deleteAccount()).rejects.toThrow('backend');
+    expect(storage.get('session')).not.toBeNull();
+  });
+
+  it('deletes a demo account and all of its local data', async () => {
+    const session = await auth.register('cadet@example.com', 'cadet2026');
+    await profile.save(session.user.id, {
+      ...(await profile.load(session.user.id)),
+      selectedAcademy: 'westpoint',
+    });
+    await support.send(session.user.id, 'Question', 'Local message body.');
+    expect(storage.get(`user:${session.user.id}:state`)).not.toBeNull();
+    expect(storage.get(`user:${session.user.id}:support`)).not.toBeNull();
+
+    await auth.deleteAccount();
+
+    expect(auth.getSession()).toBeNull();
+    expect(storage.get(`user:${session.user.id}:state`)).toBeNull();
+    expect(storage.get(`user:${session.user.id}:support`)).toBeNull();
+    expect(storage.get<Record<string, unknown>>('demo:accounts')).toEqual({});
+    await expect(auth.login('cadet@example.com', 'cadet2026')).rejects.toThrow(
+      'Incorrect email or password.',
+    );
+  });
 });
 
 describe('demo user state and support messages', () => {

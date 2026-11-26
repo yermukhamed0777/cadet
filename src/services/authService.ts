@@ -91,6 +91,27 @@ export const authService = {
     storage.remove(SESSION_KEY);
   },
 
+  /**
+   * Demo only: remove the signed-in account and all of its local data.
+   * Production accounts must be deleted by the backend; this client does not
+   * pretend to have that capability.
+   */
+  async deleteAccount() {
+    const s = storage.get<Session>(SESSION_KEY);
+    if (!s) throw new AuthError('Sign in before deleting an account.');
+    if (!s.isDemo)
+      throw new AuthError(
+        'Account deletion requires the backend. Ask the site owner to remove your account.',
+      );
+    const all = accounts();
+    delete all[s.user.email];
+    storage.set(ACCOUNTS_KEY, all);
+    storage.remove(`user:${s.user.id}:state`);
+    storage.remove(`user:${s.user.id}:support`);
+    setApiToken(null);
+    storage.remove(SESSION_KEY);
+  },
+
   persist(session: Session): Session {
     storage.set(SESSION_KEY, session);
     setApiToken(session.isDemo ? null : session.token);
