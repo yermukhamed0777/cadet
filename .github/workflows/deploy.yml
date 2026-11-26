@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Verify and deploy to GitHub Pages
 
 on:
   push:
@@ -15,7 +15,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # A red verification run stops the release before any artifact is uploaded.
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run build:hash
+      - run: npm run verify:build
+      - run: npm run test:e2e
+
   build:
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
