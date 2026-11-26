@@ -8,7 +8,7 @@ export function OnboardingAcademiesPage() {
   const { state } = useAppState();
   const name = state.profile?.firstName;
   return (
-    <div className="min-h-screen bg-page px-4 pb-10" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}>
+    <div id="main-content" tabIndex={-1} className="min-h-screen bg-page px-4 pb-10" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}>
       <div className="mx-auto max-w-2xl">
         <div className="mb-5 flex items-center gap-3">
           <LogoMark className="h-10 w-10" />

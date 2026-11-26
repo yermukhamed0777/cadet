@@ -4,7 +4,7 @@ import { Button } from './Button';
 
 export function LoadingState({ text = 'Loading…' }: { text?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted" role="status">
+    <div id="main-content" tabIndex={-1} className="flex flex-col items-center justify-center gap-3 py-16 text-muted" role="status">
       <Loader2 className="h-7 w-7 animate-spin text-navy" aria-hidden />
       <span className="text-sm">{text}</span>
     </div>

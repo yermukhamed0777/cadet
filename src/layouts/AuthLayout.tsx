@@ -4,7 +4,7 @@ import { Wordmark } from '../components/ui';
 /** Sign-in screen: dark brand block on top, form on a light card */
 export function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-navy">
+    <div id="main-content" tabIndex={-1} className="min-h-screen bg-navy">
       <div
         className="relative overflow-hidden px-5 pb-16"
         style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 40px)' }}

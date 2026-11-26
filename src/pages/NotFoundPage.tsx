@@ -3,7 +3,7 @@ import { EmptyState } from '../components/ui';
 
 export function NotFoundPage() {
   return (
-    <div className="mx-auto max-w-md p-6 pt-16">
+    <div id="main-content" tabIndex={-1} className="mx-auto max-w-md p-6 pt-16">
       <EmptyState
         title="Page not found"
         text="Check the address or return home."

@@ -85,7 +85,7 @@ export function ProfileSetupPage() {
   const toast = useToast();
   const { state } = useAppState();
   return (
-    <div className="min-h-screen bg-page px-5 pb-10" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}>
+    <div id="main-content" tabIndex={-1} className="min-h-screen bg-page px-5 pb-10" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' }}>
       <div className="mx-auto max-w-md">
         <div className="mb-5 flex items-center gap-3">
           <LogoMark className="h-10 w-10" />

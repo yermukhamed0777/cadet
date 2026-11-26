@@ -24,6 +24,21 @@
     outline: 2px solid #d9a441;
     outline-offset: 2px;
   }
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    border-radius: 0 0 8px 0;
+    background: #fffdf4;
+    color: #10243e;
+    padding: 10px 14px;
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    left: 8px;
+    top: 8px;
+  }
   input[type='date'] {
     -webkit-appearance: none;
     appearance: none;
