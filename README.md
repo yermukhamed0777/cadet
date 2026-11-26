@@ -48,9 +48,11 @@ on Netlify, `rewrites` on Vercel, `try_files` on Nginx). PWA and Web Crypto need
 **https://yermukhamed0777.github.io/cadet/**
 
 GitHub Pages uses the hash build (`/#/home`) because it has no SPA fallback.
-The trade-off: the service worker is disabled there, so offline caching and
-Web Crypto are unavailable on the Pages deployment. Run the standard build on
-an HTTPS host with SPA rewrites for the full PWA experience.
+The trade-off is that the service worker is disabled there, so **offline
+caching is not available** on that deployment. Because Pages is served over
+HTTPS, it *is* a secure context: Web Crypto and demo registration work there.
+Run the standard build on an HTTPS host with SPA rewrites for the full PWA
+experience.
 
 ## Authentication
 
@@ -80,6 +82,36 @@ Google button → GET {API}/auth/google?redirect_uri={APP}/auth/callback
 → redirect to {APP}/auth/callback?token=<session_token>
 → frontend: GET {API}/auth/me
 ```
+
+## Backup and restore
+
+Demo data lives only in this browser. **Profile → Backup & restore** downloads
+a versioned JSON file (`schema: 1`) containing your profile, academy and
+program selection, checklists, fitness results, notifications and comparison
+list. Restoring validates the file, lets you confirm, and then replaces the
+current state. Signing out does not delete local data; clearing browser data or
+switching devices does — keep the backup somewhere private, since it contains
+your name and date of birth. In production mode the backend owns state instead
+(`GET/PUT /me/state`) and the local backup is not used.
+
+## Verify
+
+The same checks run locally and in CI. CI deploys only after every step passes.
+
+```bash
+npm run lint          # ESLint, warnings denied (--max-warnings 0)
+npm run typecheck     # tsc -b
+npm test              # Vitest: unit + data-layer suites
+npm run build         # TypeScript check + root-path PWA build → dist/
+npm run build:hash    # subpath/HashRouter build → dist-hash/
+npm run verify:build  # asserts artifacts and relative vs absolute paths
+npm run test:e2e      # Playwright (system Chrome) against dist/
+npm run verify        # all of the above in order
+```
+
+`docs/plan/progress.md` records the exact commands and results of the last
+local run. `npm run capture:walkthrough` regenerates the deterministic
+screenshots in `docs/walkthrough/`; see `docs/walkthrough/README.md`.
 
 ## Backend contract
 
@@ -128,6 +160,18 @@ Rules:
 
 ## Structure
 
+Other top-level folders:
+
+```
+docs/plan/        strategy, roadmap, stable-ID backlog, decisions, progress logs
+docs/walkthrough/ deterministic screenshots and capture instructions
+docs/pilot-handoff.md  what remains human before and during the pilot
+scripts/          build-artifact verification
+tests/unit/       fast pure-rule tests (Vitest)
+tests/data/       storage/auth/state tests (Vitest + jsdom)
+tests/e2e/        browser journeys and walkthrough capture (Playwright)
+```
+
 ```
 src/
   components/  UI kit (ui/), navigation, guards, cards
@@ -138,5 +182,5 @@ src/
   pages/       screens
   services/    auth, profile/support, academy, news, storage, apiClient, config
   types/       TypeScript types
-  utils/       progress, fitness, validation, crypto, formatting
+  utils/       progress, fitness, validation, crypto, formatting, backup, events, oauth
 ```

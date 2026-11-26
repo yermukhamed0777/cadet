@@ -41,7 +41,7 @@ safe-area insets, reduced-motion support.
 
 **Weaknesses / blockers for growth**
 1. Domain is geo-locked and tiny: four institutions, one ministry, one country; Russian-only UI; name is Kazakh/Russian and does not travel.
-2. Data quality is candid but thin: `CHECKED_AT = 2026-09-27`, one fitness set is a 2025 archive, the other has no year, VVK locations list is deliberately empty, several fields are `needs_review`. Honest — but low utility as a standalone product.
+2. Data quality is candid but thin: at the time of the original assessment `CHECKED_AT` was `2026-09-27`, one fitness set was a 2025 archive, the other had no year, the VVK locations list was deliberately empty and several fields were `needs_review`. Those are historical observations about the recovered predecessor, not the current catalog: `src/data/sources.ts` now records `CHECKED_AT = 2026-11-25` and the current fitness sets are reference-only. Honest — but low utility as a standalone product.
 3. No deployment, no SEO surface, no discoverability; SEO 80 due to invalid `robots.txt` on the SPA fallback.
 4. Auth is demo-only; support messages and notifications are local/static; no real push; no document upload (only status toggles); no deadline calendar — the single most important missing piece for admissions.
 5. Desktop layout wastes space (`max-w-2xl` centered column); toast notifications overlap page headers (visible on registration, onboarding and home).
