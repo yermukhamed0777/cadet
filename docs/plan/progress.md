@@ -114,3 +114,90 @@ The live Pages site still serves the previously published commit; this sprint's
 local commits are not pushed. No account, email, participant, payment or public
 commitment was created.
 
+## 2026-11-27 — Google Fonts failure fix, push, CI and Pages confirmation (final)
+
+### Investigation of the onboarding failure
+
+- Command: Playwright page loaded with
+  `--host-resolver-rules=MAP fonts.googleapis.com ~NOTFOUND, MAP fonts.gstatic.com ~NOTFOUND`
+  Result: exactly **two** console errors, one per navigation, both
+  `Failed to load resource: net::ERR_NAME_NOT_RESOLVED`. The message text
+  carries **no URL**, but `ConsoleMessage.location().url` returns the failing
+  `https://fonts.googleapis.com/css2?…` stylesheet URL — so any filter that
+  matches on message text alone cannot identify the host.
+- Command: same probe without the resolver rule (this environment)
+  Result: `fonts.googleapis.com` resolves (HTTP 200), zero failed requests,
+  zero errors — the failure only appears when the font hosts are
+  unresolvable, which is why the flow reached its final assertions and then
+  failed on the two collected errors.
+- Conclusion: production code was not at fault; the test's error collector
+  had to distinguish environment-dependent font-host DNS failures from real
+  application errors.
+
+### Fix (test-only; no production code changed)
+
+- `tests/e2e/helpers.ts` — new `collectErrors(page)` helper: ignores
+  `net::ERR_NAME_NOT_RESOLVED` only when `location().url` is
+  `fonts.googleapis.com` or `fonts.gstatic.com`; every other page/console
+  error still fails the suite.
+- `tests/e2e/onboarding.spec.ts` — uses `collectErrors` (behaviour
+  otherwise unchanged).
+- `tests/e2e/fonts.spec.ts` (new) — launches Chrome with DNS failing for
+  exactly those two hosts, **asserts a font request really failed** with
+  `net::ERR_NAME_NOT_RESOLVED` (so the scenario cannot pass vacuously), then
+  checks the locally bundled CSS still applies (`system-ui` fallback font
+  stack, non-empty background) and that registration plus onboarding
+  complete end to end.
+- `index.html` — left unchanged: the Google Fonts `<link>` already degrades
+  to the system-font stack declared in `src/index.css`, so the public
+  experience keeps rendering when the font CDN is unreachable.
+
+### Local verification
+
+| Command | Exact result |
+|---|---|
+| `npm.cmd run verify` (first attempt) | failed before tests with a transient `VirtualAlloc failed` / `Worker exited unexpectedly` in the Vitest worker (machine memory, not code). |
+| `npm.cmd run verify` (rerun, final) | exit `0`: lint, typecheck, `Test Files 8 passed (8)` / `Tests 50 passed (50)`, root build `✓ built in 10.95s` + `precache 15 entries (373.92 KiB)`, hash build `✓ built in 4.32s`, `21` verify:build PASS lines (`All build-artifact checks passed.`), all verify:pwa PASS lines (`All PWA deployment checks passed.`), `11 passed (1.5m)` e2e — the 9 previous tests plus the 2 new font-resilience tests. |
+| `npm.cmd run test:e2e -- tests/e2e/fonts.spec.ts` | `2 passed (3.6s)` including the self-check `expected a font host DNS failure`. |
+
+### Review of the ten-commit diff (`5ad420e..04176c7`)
+
+- `git diff HEAD~10..HEAD --stat`: 74 files, 4882 insertions, 55 deletions —
+  docs/plan, walkthrough PNGs, verification scripts, tests, source and
+  `tsconfig.tsbuildinfo` removal (intentional, D-009). No `.env`, IDE, OS
+  or build artifacts added.
+- Secret scan over the whole diff: no private keys, tokens, passwords,
+  `secrets.*`, client secrets or bearer headers. The only `token:` hit is
+  `token: 'fake'` in a unit test; the only URL hit is an npm registry link.
+- Walkthrough PNGs regenerated during test runs differed from the committed
+  files by 195/329160 pixels (0.06 %, text antialiasing only); restored to
+  the committed versions so the fix commit contains only test changes.
+
+### Push, CI and Pages — final SHA
+
+- Command: `git push origin main` Result: `83fc031..924b79c main -> main`
+  (11 commits: CADET-004…019 plus the font fix).
+- **Final verified SHA: `924b79c`.**
+- Command: `gh run watch 46015459725 --exit-status` Result: overall success,
+  exit `0` — workflow "Verify and deploy to GitHub Pages": `verify` ✓ in
+  `2m24s` (npm ci, lint, typecheck, test, build, build:hash, verify:build,
+  test:e2e), `build` ✓ in `28s`, `deploy` ✓ in `8s`
+  (`actions/deploy-pages@v4`). One non-blocking annotation: Node.js 20
+  deprecation warning for `actions/checkout@v4`/`actions/setup-node@v4`.
+- Live Pages probe (`https://yermukhamed0777.github.io/cadet/`): HTTP `200`,
+  served asset `assets/index-CFy1mYvw.js` (identical to the local hash
+  build), `{"secureContext":true,"cryptoOk":true,"skipLink":true,
+  "loginVisible":true,"title":"CADET — Your path to commission","url":"https://yermukhamed0777.github.io/cadet/#/login"}`,
+  `HTTP_ERRORS []`.
+
+### Explicit scope limits (unchanged)
+
+- **West Point and USMMA remain unverified**: their official pages returned
+  HTTP 403 to automated fetching and were not re-checked; those facts keep
+  the prior check date and an explicit manual-recheck note
+  ([`source-audit.md`](source-audit.md)).
+- **Production OAuth is not implemented**: the Google sign-in handoff is
+  documentation only (D-013). **Account deletion is local demo-data
+  deletion only**; the client refuses remote deletion (D-012).
+- No account, email, participant, payment or public commitment was created.
+
