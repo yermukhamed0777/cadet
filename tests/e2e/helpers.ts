@@ -1,6 +1,31 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type ConsoleMessage, type Page } from '@playwright/test';
 
 export const FIXED_TIME = new Date('2026-11-26T12:00:00.000Z');
+
+const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+
+/** True for a console message reporting a DNS failure on a Google Fonts host. */
+function isFontHostDnsFailure(m: ConsoleMessage): boolean {
+  const url = m.location()?.url ?? '';
+  return m.text().includes('net::ERR_NAME_NOT_RESOLVED') && FONT_HOSTS.some((h) => url.includes(h));
+}
+
+/**
+ * Collect uncaught page errors and console errors from a page.
+ *
+ * Google Fonts host failures are excluded: `net::ERR_NAME_NOT_RESOLVED` on
+ * `fonts.googleapis.com`/`fonts.gstatic.com` depends on whether those hosts
+ * resolve in the current network, not on application behaviour, and the app
+ * must keep working with system-font fallback when they do not.
+ */
+export function collectErrors(page: Page): string[] {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => {
+    if (m.type() === 'error' && !isFontHostDnsFailure(m)) errors.push(m.text());
+  });
+  return errors;
+}
 
 /** Register a deterministic demo account and complete both onboarding steps. */
 export async function onboard(page: Page, email = 'applicant@example.com') {

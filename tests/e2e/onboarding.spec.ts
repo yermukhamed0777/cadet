@@ -1,12 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { onboard } from './helpers';
+import { collectErrors, onboard } from './helpers';
 
 test('registration, onboarding and derived readiness work end to end', async ({ page }) => {
-  const errors: string[] = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  page.on('console', (m) => {
-    if (m.type() === 'error') errors.push(m.text());
-  });
+  const errors = collectErrors(page);
 
   await onboard(page);
   await expect(page.getByRole('heading', { name: /Jane/ }).first()).toBeVisible();
